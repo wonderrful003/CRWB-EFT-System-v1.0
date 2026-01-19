@@ -1,0 +1,161 @@
+# eft_app/forms.py - UPDATED VERSION WITH RBM FIELDS
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Group
+from .models import (
+    Bank, Zone, Scheme, Supplier, DebitAccount,
+    EFTBatch, EFTTransaction, ApprovalAuditLog
+)
+
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    role = forms.ChoiceField(choices=[
+        ('System Admin', 'System Admin'),
+        ('Accounts Personnel', 'Accounts Personnel'),
+        ('Authorizer', 'Authorizer'),
+    ], widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        role = self.cleaned_data.get('role')
+        if commit:
+            user.save()
+            # Assign the user to the selected group/role
+            group, created = Group.objects.get_or_create(name=role)
+            user.groups.add(group)
+            # If System Admin, give staff access for django-admin
+            if role == 'System Admin':
+                user.is_staff = True
+                user.save()
+        return user
+
+class BankForm(forms.ModelForm):
+    class Meta:
+        model = Bank
+        fields = ['bank_name', 'swift_code', 'is_active']
+        widgets = {
+            'bank_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'swift_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., NBMAMWM0'}),
+        }
+
+class ZoneForm(forms.ModelForm):
+    class Meta:
+        model = Zone
+        fields = ['zone_code', 'zone_name', 'description']
+        widgets = {
+            'zone_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'zone_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+class SchemeForm(forms.ModelForm):
+    class Meta:
+        model = Scheme
+        fields = ['scheme_code', 'scheme_name', 'zone', 'is_active']
+        widgets = {
+            'scheme_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '8-digit code'}),
+            'scheme_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'zone': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = [
+            'supplier_code', 'supplier_name', 'bank', 'account_number',
+            'account_name', 'employee_number', 'national_id',
+            'credit_reference', 'cost_center', 'source', 'is_active'
+        ]
+        widgets = {
+            'supplier_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '7-digit vendor code'}),
+            'supplier_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'bank': forms.Select(attrs={'class': 'form-control'}),
+            'account_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'account_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'employee_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Optional'}),
+            'national_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Optional'}),
+            'credit_reference': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Invoice number'}),
+            'cost_center': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 03000101 Administration'}),
+            'source': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Unique IFMIS reference'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['supplier_code'].help_text = "7-digit vendor code (e.g., 57819)"
+        self.fields['account_name'].help_text = "Payee Details/Beneficiary Name"
+        self.fields['credit_reference'].help_text = "Payees Reference/Invoice Number"
+        self.fields['cost_center'].help_text = "Originating Cost/Funds Centre"
+        self.fields['source'].help_text = "Unique reference number from IFMIS"
+
+class DebitAccountForm(forms.ModelForm):
+    class Meta:
+        model = DebitAccount
+        fields = ['account_number', 'account_name', 'description', 'is_active']
+        widgets = {
+            'account_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 13006161244'}),
+            'account_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., (ORT) MG Other Recurrent Expenditure A/C'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+class EFTBatchForm(forms.ModelForm):
+    class Meta:
+        model = EFTBatch
+        fields = ['batch_name', 'file_reference']
+        widgets = {
+            'batch_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Jan 2024 Suppliers'}),
+            'file_reference': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., WTC01-31.01.2023'}),
+        }
+
+class EFTTransactionForm(forms.ModelForm):
+    class Meta:
+        model = EFTTransaction
+        fields = [
+            'debit_account', 'supplier', 'scheme', 'amount',
+            'narration', 'reference_number', 'employee_number',
+            'national_id', 'cost_center', 'source_reference'
+        ]
+        widgets = {
+            'debit_account': forms.Select(attrs={'class': 'form-control'}),
+            'supplier': forms.Select(attrs={'class': 'form-control'}),
+            'scheme': forms.Select(attrs={'class': 'form-control'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'narration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Description of transaction'}),
+            'reference_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Invoice Number'}),
+            'employee_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Optional'}),
+            'national_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Optional'}),
+            'cost_center': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 03000101'}),
+            'source_reference': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'IFMIS reference'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['supplier'].queryset = Supplier.objects.filter(is_active=True)
+        self.fields['scheme'].queryset = Scheme.objects.filter(is_active=True)
+        self.fields['debit_account'].queryset = DebitAccount.objects.filter(is_active=True)
+        
+        # Add help text
+        self.fields['reference_number'].help_text = "Payees Reference Number/Invoice Number"
+        self.fields['narration'].help_text = "Description of the transaction (max 200 chars)"
+
+class BatchApprovalForm(forms.Form):
+    remarks = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Approval Remarks'
+    )
+
+class BatchRejectionForm(forms.Form):
+    rejection_reason = forms.CharField(
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Rejection Reason'
+    )

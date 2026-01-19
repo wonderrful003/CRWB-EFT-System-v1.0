@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}My EFT Batches{% endblock %}
+
+{% block page_title %}My EFT Batches{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'accounts_dashboard' %}">Dashboard</a></li>
+<li class="breadcrumb-item active">Batches</li>
+{% endblock %}
+
+{% block top_actions %}
+<a href="{% url 'create_batch' %}" class="btn btn-primary btn-action">
+    <i class="fas fa-plus-circle"></i> New Batch
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Filter Tabs -->
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link {% if not status_filter %}active{% endif %}" href="{% url 'batch_list' %}">
+            All Batches
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status_filter == 'DRAFT' %}active{% endif %}" href="?status=DRAFT">
+            Draft
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status_filter == 'PENDING' %}active{% endif %}" href="?status=PENDING">
+            Pending
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status_filter == 'APPROVED' %}active{% endif %}" href="?status=APPROVED">
+            Approved
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status_filter == 'REJECTED' %}active{% endif %}" href="?status=REJECTED">
+            Rejected
+        </a>
+    </li>
+</ul>
+
+<!-- Batches Table -->
+<div class="dashboard-card">
+    <div class="card-body">
+        {% if batches %}
+        <div class="table-responsive">
+            <table class="table table-hover data-table">
+                <thead>
+                    <tr>
+                        <th>Batch Reference</th>
+                        <th>Batch Name</th>
+                        <th>Records</th>
+                        <th>Amount (MWK)</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for batch in batches %}
+                    <tr>
+                        <td><strong>{{ batch.batch_reference }}</strong></td>
+                        <td>{{ batch.batch_name }}</td>
+                        <td>{{ batch.record_count }}</td>
+                        <td>{{ batch.total_amount|floatformat:2 }}</td>
+                        <td>
+                            {% if batch.status == 'DRAFT' %}
+                            <span class="status-badge status-draft">Draft</span>
+                            {% elif batch.status == 'PENDING' %}
+                            <span class="status-badge status-pending">Pending</span>
+                            {% elif batch.status == 'APPROVED' %}
+                            <span class="status-badge status-approved">Approved</span>
+                            {% elif batch.status == 'REJECTED' %}
+                            <span class="status-badge status-rejected">Rejected</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ batch.created_at|date:"d M Y" }}</td>
+                        <td>
+                            {% if batch.status == 'DRAFT' %}
+                            <a href="{% url 'edit_batch' batch.id %}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            {% else %}
+                            <a href="{% url 'view_batch' batch.id %}" class="btn btn-sm btn-info">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                            {% endif %}
+                            
+                            {% if batch.status == 'APPROVED' %}
+                            <a href="{% url 'export_batch' batch.id 'txt' %}" class="btn btn-sm btn-success">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No batches found.
+            {% if status_filter %}
+                Try <a href="{% url 'batch_list' %}" class="alert-link">viewing all batches</a>.
+            {% else %}
+                <a href="{% url 'create_batch' %}" class="alert-link">Create your first batch</a>.
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

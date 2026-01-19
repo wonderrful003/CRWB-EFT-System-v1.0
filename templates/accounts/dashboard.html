@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+
+{% block title %}Accounts Dashboard - CRWB EFT{% endblock %}
+{% block page_title %}Accounts Personnel Dashboard{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item active">Dashboard</li>
+{% endblock %}
+
+{% block sidebar_menu %}
+<li>
+    <a href="{% url 'accounts_dashboard' %}" class="active">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+    </a>
+</li>
+<li>
+    <a href="{% url 'create_batch' %}">
+        <i class="fas fa-plus-circle"></i>
+        <span>Create Batch</span>
+    </a>
+</li>
+<li>
+    <a href="{% url 'batch_list' %}">
+        <i class="fas fa-list"></i>
+        <span>All Batches</span>
+    </a>
+</li>
+<li class="sidebar-divider"></li>
+<li class="sidebar-header">Filter by Status</li>
+<li>
+    <a href="{% url 'batch_list' %}?status=DRAFT">
+        <i class="fas fa-edit"></i>
+        <span>Draft Batches</span>
+        {% if stats.draft_batches > 0 %}
+        <span class="badge bg-warning float-end">{{ stats.draft_batches }}</span>
+        {% endif %}
+    </a>
+</li>
+<li>
+    <a href="{% url 'batch_list' %}?status=PENDING">
+        <i class="fas fa-clock"></i>
+        <span>Pending Approval</span>
+        {% if stats.pending_batches > 0 %}
+        <span class="badge bg-info float-end">{{ stats.pending_batches }}</span>
+        {% endif %}
+    </a>
+</li>
+<li>
+    <a href="{% url 'batch_list' %}?status=APPROVED">
+        <i class="fas fa-check-circle"></i>
+        <span>Approved Batches</span>
+        {% if stats.approved_batches > 0 %}
+        <span class="badge bg-success float-end">{{ stats.approved_batches }}</span>
+        {% endif %}
+    </a>
+</li>
+<li>
+    <a href="{% url 'batch_list' %}?status=REJECTED">
+        <i class="fas fa-times-circle"></i>
+        <span>Rejected Batches</span>
+        {% if stats.rejected_batches > 0 %}
+        <span class="badge bg-danger float-end">{{ stats.rejected_batches }}</span>
+        {% endif %}
+    </a>
+</li>
+{% endblock %}
+
+{% block top_actions %}
+<a href="{% url 'create_batch' %}" class="btn btn-primary btn-lg">
+    <i class="fas fa-plus-circle me-2"></i> Create New EFT Batch
+</a>
+<a href="{% url 'batch_list' %}" class="btn btn-outline-primary btn-lg">
+    <i class="fas fa-list me-2"></i> View All Batches
+</a>
+{% endblock %}
+
+{% block page_css %}
+<style>
+/* ===== DASHBOARD REDESIGN ===== */
+.dashboard-welcome {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.dashboard-welcome h2 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-welcome p {
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+.current-date {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* ===== STAT CARDS ===== */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: 12px;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.stat-total { background: linear-gradient(135deg, #667eea, #764ba2); }
+.stat-draft { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.stat-pending { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.stat-approved { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+.stat-rejected { background: linear-gradient(135deg, #f857a6, #ff5858); }
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.stat-link {
+    font-size: 0.85rem;
+    color: var(--accent-purple-dark);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.stat-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== QUICK ACTIONS ===== */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-btn {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: left;
+    display: flex;
+    gap: 1rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: #333;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    border-color: var(--accent-purple);
+}
+
+.action-icon {
+    font-size: 1.5rem;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-create { background: linear-gradient(135deg, #667eea, #764ba2); }
+.action-view { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+/* ===== RECENT BATCHES TABLE ===== */
+.batch-section {
+    margin-top: 2rem;
+}
+
+.batch-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.batch-table thead th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+.batch-table tbody td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.status-badge {
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    display: inline-block;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .dashboard-welcome { text-align: center; }
+    .current-date { margin-top: 1rem; display: inline-block; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Banner -->
+<div class="dashboard-welcome">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2>Welcome back, {{ user.get_full_name|default:user.username }}!</h2>
+            <p>Here's an overview of EFT batches and transactions. Total batches: <strong>{{ stats.total_batches }}</strong></p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <div class="current-date">
+                <i class="fas fa-calendar-alt me-2"></i><span id="current-date"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-icon stat-total"><i class="fas fa-layer-group"></i></div>
+        <div class="stat-number">{{ stats.total_batches }}</div>
+        <div class="stat-label">Total Batches</div>
+        <a href="{% url 'batch_list' %}" class="stat-link"><i class="fas fa-eye"></i> View All</a>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-draft"><i class="fas fa-edit"></i></div>
+        <div class="stat-number">{{ stats.draft_batches }}</div>
+        <div class="stat-label">Draft Batches</div>
+        <a href="{% url 'batch_list' %}?status=DRAFT" class="stat-link"><i class="fas fa-edit"></i> Edit Drafts</a>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-pending"><i class="fas fa-clock"></i></div>
+        <div class="stat-number">{{ stats.pending_batches }}</div>
+        <div class="stat-label">Pending Approval</div>
+        <a href="{% url 'batch_list' %}?status=PENDING" class="stat-link"><i class="fas fa-eye"></i> View Pending</a>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-approved"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-number">{{ stats.approved_batches }}</div>
+        <div class="stat-label">Approved Batches</div>
+        <a href="{% url 'batch_list' %}?status=APPROVED" class="stat-link"><i class="fas fa-check"></i> View Approved</a>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-rejected"><i class="fas fa-times-circle"></i></div>
+        <div class="stat-number">{{ stats.rejected_batches }}</div>
+        <div class="stat-label">Rejected Batches</div>
+        <a href="{% url 'batch_list' %}?status=REJECTED" class="stat-link"><i class="fas fa-times"></i> View Rejected</a>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="action-grid">
+    <a href="{% url 'create_batch' %}" class="action-btn">
+        <div class="action-icon action-create"><i class="fas fa-plus-circle"></i></div>
+        <div class="action-content">
+            <div class="action-title">Create New Batch</div>
+            <div class="action-desc">Start a new EFT batch quickly</div>
+        </div>
+    </a>
+    <a href="{% url 'batch_list' %}" class="action-btn">
+        <div class="action-icon action-view"><i class="fas fa-list"></i></div>
+        <div class="action-content">
+            <div class="action-title">View All Batches</div>
+            <div class="action-desc">Browse and manage existing batches</div>
+        </div>
+    </a>
+</div>
+
+<!-- Recent Batches Table -->
+<div class="batch-section">
+    <h4>Recent Batches</h4>
+    <table class="batch-table data-table">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Name</th>
+                <th>Created On</th>
+                <th>Status</th>
+                <th>Records</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for batch in recent_batches %}
+            <tr>
+                <td class="batch-reference">{{ batch.reference }}</td>
+                <td class="batch-name">{{ batch.name }}</td>
+                <td class="batch-date">{{ batch.created_at|date:"d M Y H:i" }}</td>
+                <td>
+                    <span class="status-badge status-{{ batch.status|lower }}">{{ batch.status }}</span>
+                </td>
+                <td><span class="record-count">{{ batch.records_count }}</span></td>
+                
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No recent batches found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
