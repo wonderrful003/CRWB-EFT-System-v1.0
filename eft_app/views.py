@@ -5,12 +5,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.db import transaction as db_transaction
 from django.db.models import Sum, Count, Q
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import Group
+from django.utils.safestring import mark_safe
 import json
 
 from .models import (
@@ -306,6 +307,29 @@ class SchemeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     context_object_name = 'schemes'
     permission_required = 'eft_app.view_scheme'
     paginate_by = 20
+    
+    def get_queryset(self):
+        queryset = Scheme.objects.all().select_related('zone')
+        
+        # Filter by zone if zone_id is provided
+        zone_id = self.request.GET.get('zone')
+        if zone_id:
+            queryset = queryset.filter(zone_id=zone_id)
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Add zone info if filtering by zone
+        zone_id = self.request.GET.get('zone')
+        if zone_id:
+            try:
+                context['current_zone'] = Zone.objects.get(id=zone_id)
+            except Zone.DoesNotExist:
+                pass
+        
+        return context
 
 class SchemeCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Scheme
@@ -314,8 +338,24 @@ class SchemeCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'eft_app.add_scheme'
     success_url = reverse_lazy('scheme_list')
     
+    def get_initial(self):
+        """Set initial zone if passed in URL"""
+        initial = super().get_initial()
+        zone_id = self.request.GET.get('zone')
+        if zone_id:
+            try:
+                zone = Zone.objects.get(id=zone_id)
+                initial['zone'] = zone
+            except Zone.DoesNotExist:
+                pass
+        return initial
+    
     def form_valid(self, form):
-        messages.success(self.request, 'Scheme created successfully')
+        scheme_name = form.cleaned_data['scheme_name']
+        messages.success(self.request, 
+            mark_safe(f'Scheme "<strong>{scheme_name}</strong>" created successfully. '
+                      f'<a href="{reverse("scheme_list")}" class="alert-link">View all schemes</a>')
+        )
         return super().form_valid(form)
 
 class SchemeUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -326,7 +366,11 @@ class SchemeUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     success_url = reverse_lazy('scheme_list')
     
     def form_valid(self, form):
-        messages.success(self.request, 'Scheme updated successfully')
+        scheme_name = form.cleaned_data['scheme_name']
+        messages.success(self.request, 
+            mark_safe(f'Scheme "<strong>{scheme_name}</strong>" updated successfully. '
+                      f'<a href="{reverse("scheme_list")}" class="alert-link">View all schemes</a>')
+        )
         return super().form_valid(form)
 
 class SchemeDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
