@@ -1,4 +1,4 @@
-# eft_app/forms.py - UPDATED VERSION WITH RBM FIELDS
+# eft_app/forms.py - COMPLETE VERSION WITH ALL FORMS
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
@@ -36,6 +36,61 @@ class UserRegistrationForm(UserCreationForm):
             if role == 'System Admin':
                 user.is_staff = True
                 user.save()
+        return user
+
+class UserEditForm(forms.ModelForm):
+    """Form for editing existing users"""
+    role = forms.ChoiceField(
+        choices=[
+            ('', 'Select Role'),
+            ('System Admin', 'System Admin'),
+            ('Accounts Personnel', 'Accounts Personnel'),
+            ('Authorizer', 'Authorizer'),
+        ], 
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'is_active']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set initial role from user's groups
+        if self.instance and self.instance.pk:
+            user_groups = self.instance.groups.all()
+            if user_groups.exists():
+                self.fields['role'].initial = user_groups.first().name
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        
+        if commit:
+            user.save()
+            
+            # Update role/group
+            role = self.cleaned_data.get('role')
+            if role:
+                # Clear existing groups
+                user.groups.clear()
+                # Add new group
+                group, created = Group.objects.get_or_create(name=role)
+                user.groups.add(group)
+                # Update staff status
+                user.is_staff = (role == 'System Admin')
+                user.save()
+            elif not role and user.groups.exists():
+                # If role cleared, remove from groups
+                user.groups.clear()
+        
         return user
 
 class BankForm(forms.ModelForm):

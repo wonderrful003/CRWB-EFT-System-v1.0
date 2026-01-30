@@ -1,4 +1,4 @@
-# eft_app/models.py - UPDATED VERSION WITH RBM FIELDS
+# eft_app/models.py - COMPLETE VERSION WITH ALL FIXES
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, RegexValidator
@@ -21,12 +21,19 @@ class Bank(models.Model):
     
     def __str__(self):
         return f"{self.bank_name} ({self.swift_code})"
+    
+    # Add code field for bank code
+    @property
+    def code(self):
+        """Extract bank code from SWIFT code (first 4 letters)"""
+        return self.swift_code[:4] if self.swift_code else ""
 
 class Zone(models.Model):
     """CRWB Zones"""
     zone_code = models.CharField(max_length=10, unique=True)
     zone_name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+    is_active = models.BooleanField(default=True)  # ADDED THIS FIELD
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -36,6 +43,12 @@ class Zone(models.Model):
     
     def __str__(self):
         return f"{self.zone_code} - {self.zone_name}"
+    
+    # Add property for user count (if you have users assigned to zones)
+    @property
+    def user_count(self):
+        """Count users assigned to this zone"""
+        return 0  # Implement this if you have user-zone relationships
 
 class Scheme(models.Model):
     """CRWB Schemes mapped to Zones"""
@@ -52,6 +65,11 @@ class Scheme(models.Model):
     
     def __str__(self):
         return f"{self.scheme_code} - {self.scheme_name} ({self.zone.zone_code})"
+    
+    @property
+    def description(self):
+        """Return description if needed in views"""
+        return f"{self.scheme_name} - {self.zone.zone_name}"
 
 class Supplier(models.Model):
     """Suppliers/Beneficiaries with RBM-compliant fields"""
@@ -116,9 +134,14 @@ class EFTBatch(models.Model):
     # RBM File reference (from payment file sample)
     file_reference = models.CharField(max_length=16, blank=True, help_text="WTC01-31.01.2023 format")
     
+    # Debit Account for the batch
+    debit_account = models.ForeignKey(DebitAccount, on_delete=models.PROTECT, null=True, blank=True, 
+                                     related_name='batches')
+    
     # Relationships
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='batches_created')
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)  # ADDED for tracking updates
     approved_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True, 
                                    related_name='batches_approved')
     approved_at = models.DateTimeField(null=True, blank=True)
@@ -163,6 +186,10 @@ class EFTBatch(models.Model):
         self.total_amount = sum(t.amount for t in transactions)
         self.record_count = transactions.count()
         self.save()
+    
+    def get_status_display(self):
+        """Get human-readable status"""
+        return dict(self.STATUS_CHOICES).get(self.status, self.status)
 
 class EFTTransaction(models.Model):
     """Individual EFT transactions - RBM compliant"""
