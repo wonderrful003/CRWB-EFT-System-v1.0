@@ -1,0 +1,923 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "System Admin",
+    "permissions": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      47,
+      48,
+      49,
+      50,
+      43,
+      44,
+      45,
+      46,
+      39,
+      40,
+      41,
+      42
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Accounts Personnel",
+    "permissions": [
+      28,
+      32,
+      33,
+      38,
+      34,
+      36,
+      55,
+      56,
+      57,
+      58,
+      50,
+      46,
+      42
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 3,
+  "fields": {
+    "name": "Authorizer",
+    "permissions": [
+      28,
+      32,
+      37,
+      38,
+      36,
+      58,
+      50,
+      46,
+      42
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$0RKrETZ3Su2l9Q5U7v7jqk$EfNnI9rBmcItvOytgWlXtnbE//pJr4D+zjNgOrlO12w=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "crwb.admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@crwb.mw",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-18T12:23:26.826Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$uxdTMYsrdjTQevncYKDd5W$NBdY2QGUXbhnXImP4WG1jCIzFppGJuhbe9ObXjnMJZE=",
+    "last_login": "2026-01-23T06:32:53.731Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@crwb.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-18T12:54:46.134Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$XnxVfFNUcGIO5rhYXIxK1J$e2y3q7WZnWExXPdCelT0LyTWQgEJU+Cg1nC1gQUOuSs=",
+    "last_login": "2026-01-27T07:06:27.149Z",
+    "is_superuser": false,
+    "username": "sysadmin",
+    "first_name": "System",
+    "last_name": "Admin",
+    "email": "sysadmin@crwb.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-18T13:01:48.906Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$rRuqt0UytIfEdtnpOUpgXi$rds32cawv3siiEmRqd8Pj1U737Y3r42qMCwxYiYD0KI=",
+    "last_login": "2026-01-27T08:49:36.348Z",
+    "is_superuser": false,
+    "username": "accounts",
+    "first_name": "Accounts",
+    "last_name": "User",
+    "email": "accounts@crwb.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-18T13:01:50.040Z",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$l8awJGJM14Bk7ROVjbv83Z$rbsZXADkzkwHD8rP71Wia9YRIrHkQg3yiPV9YI/2NYE=",
+    "last_login": "2026-01-27T09:29:45.290Z",
+    "is_superuser": false,
+    "username": "authorizer",
+    "first_name": "Auth",
+    "last_name": "User",
+    "email": "authorizer@crwb.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-18T13:01:51.416Z",
+    "groups": [
+      3
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$Q87h53aBMmUrHI6YIAyMCm$TYVx3gweX8m9tAByLXuXBILji5dFzHxoT2dgjnMyEgo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "demo",
+    "first_name": "Demo",
+    "last_name": "User",
+    "email": "demo@crwb.gov.mw",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-19T06:39:22.833Z",
+    "groups": [
+      1,
+      2,
+      3
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "73rdjo436wt6n5u11ngbfdv7uzbsgziw",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vhTwz:krhLyhHF9MAxJu0CKZKtwky183OvDWTsypM0g-1yiWU",
+    "expire_date": "2026-01-18T15:40:21.693Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8mxfwthl4g64wp9gkytrdiaas94uoife",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEMTHm4dO83EIaHVA0kpV0Z_12bdKHbe865L-bDtla_jbz4ObEzU-z0u1GIj9x2kO6h3TqPva3LTHxX-EEHv_aUn5fD_TuoYdRvPUFRSCByIQRyxVoTwJA0ZLGQiBGyBswBnbARHSotwSUpidykCRJ7fwDgfDeb:1vhnar:rv4byQf9KAMTghG6Wk9Et7NeSbG7hgmP0ya6uU1s4FQ",
+    "expire_date": "2026-01-19T12:38:49.865Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "eql793zmfee9p0nx6hjfqh3hgrlkqi71",
+  "fields": {
+    "session_data": ".eJxVjDEOwjAMRe-SGUWhwWlgZO8ZIju2SQE1UtNOiLtDpQ6w_vfef5mE61LS2mROI5uLAXP43QjzQ6YN8B2nW7W5Tss8kt0Uu9Nmh8ryvO7u30HBVr51F4BRgAiiBmWSTHDMsVMlFtAYMPfeqZ4IOfroHGXUnoh9cGdgNe8PMOQ55w:1vhl50:F-9A7MbPJZAf8gplsgueDoZF_kxpCid5W34_vKWfdcE",
+    "expire_date": "2026-01-19T09:57:46.400Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "g5q7apwjn9c2azp9gyvtlm51k4h9wptf",
+  "fields": {
+    "session_data": ".eJxVjDEOwjAMRe-SGUWhwWlgZO8ZIju2SQE1UtNOiLtDpQ6w_vfef5mE61LS2mROI5uLAXP43QjzQ6YN8B2nW7W5Tss8kt0Uu9Nmh8ryvO7u30HBVr51F4BRgAiiBmWSTHDMsVMlFtAYMPfeqZ4IOfroHGXUnoh9cGdgNe8PMOQ55w:1vkfPd:Ys57w3bs75rEepsu39rgvfcEZ1o7oyHSjQZg2OtsLvc",
+    "expire_date": "2026-01-27T10:31:05.456Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i95irgr2skn6p8sqenhsidw8cj2t1yoq",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vhWsT:veh8yvXtrQ4tXTh4iA7BQbAJ1r3OgdSxMpPJBB3xdSI",
+    "expire_date": "2026-01-18T18:47:53.056Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ttp5di1kv2kq23hbqahbyl55fg69mch0",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlm2E9YbSnrOYO3H4ABypDipEHeHSCmgfTPzXibRupS0tjynUc3JBHP43ZjkkesG9E71NlmZ6jKPbDfF7rTZy6T5ed7dv4NCrXzrIRNxVBQE6RkiIjGGSASZwQ-CqAwhenTspe8Ujs5hB4yE7kqSzfsD-kQ4PQ:1vjAyO:IxfP5kgDkutsmnZS_nzQqy-gMUf6GMLf2YvdMXQwJBQ",
+    "expire_date": "2026-01-23T07:48:48.383Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "yyvly7yei7cwk02fp9arwqk07tqj48ee",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vhbTf:PmZQYVSYIM1wx-ePR449OgiNYfkhzbUPjYSBjknd-C0",
+    "expire_date": "2026-01-18T23:42:35.832Z"
+  }
+},
+{
+  "model": "eft_app.bank",
+  "pk": 1,
+  "fields": {
+    "bank_name": "National Bank of Malawi",
+    "swift_code": "NBMAMWM0",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:25:01.841Z"
+  }
+},
+{
+  "model": "eft_app.bank",
+  "pk": 2,
+  "fields": {
+    "bank_name": "Standard Bank",
+    "swift_code": "SBICMWM0",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:25:02.038Z"
+  }
+},
+{
+  "model": "eft_app.bank",
+  "pk": 3,
+  "fields": {
+    "bank_name": "Reserve Bank of Malawi",
+    "swift_code": "RBMAMWM0",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:25:02.221Z"
+  }
+},
+{
+  "model": "eft_app.bank",
+  "pk": 4,
+  "fields": {
+    "bank_name": "FDH Bank",
+    "swift_code": "FDHBMWM0",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:25:02.421Z"
+  }
+},
+{
+  "model": "eft_app.bank",
+  "pk": 5,
+  "fields": {
+    "bank_name": "NBS Bank",
+    "swift_code": "NBSBMWM0",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:25:02.680Z"
+  }
+},
+{
+  "model": "eft_app.zone",
+  "pk": 1,
+  "fields": {
+    "zone_code": "HQ_ADMIN",
+    "zone_name": "Headquarters (Lilongwe)",
+    "description": "",
+    "created_at": "2026-01-19T08:25:00.184Z"
+  }
+},
+{
+  "model": "eft_app.zone",
+  "pk": 2,
+  "fields": {
+    "zone_code": "KS_ZONE",
+    "zone_name": "Kasungu Zone",
+    "description": "",
+    "created_at": "2026-01-19T08:25:00.347Z"
+  }
+},
+{
+  "model": "eft_app.zone",
+  "pk": 3,
+  "fields": {
+    "zone_code": "MP_ZONE",
+    "zone_name": "Mponela Zone",
+    "description": "",
+    "created_at": "2026-01-19T08:25:00.504Z"
+  }
+},
+{
+  "model": "eft_app.zone",
+  "pk": 4,
+  "fields": {
+    "zone_code": "SL_ZONE",
+    "zone_name": "Salima Zone",
+    "description": "",
+    "created_at": "2026-01-19T08:25:00.657Z"
+  }
+},
+{
+  "model": "eft_app.zone",
+  "pk": 5,
+  "fields": {
+    "zone_code": "DZ_ZONE",
+    "zone_name": "Dedza Zone",
+    "description": "",
+    "created_at": "2026-01-19T08:25:00.805Z"
+  }
+},
+{
+  "model": "eft_app.scheme",
+  "pk": 1,
+  "fields": {
+    "scheme_code": "03000101",
+    "scheme_name": "HQ Administration",
+    "zone": 1,
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:00.947Z"
+  }
+},
+{
+  "model": "eft_app.scheme",
+  "pk": 2,
+  "fields": {
+    "scheme_code": "10019525",
+    "scheme_name": "Mponela Main Scheme",
+    "zone": 3,
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:01.114Z"
+  }
+},
+{
+  "model": "eft_app.scheme",
+  "pk": 3,
+  "fields": {
+    "scheme_code": "10019524",
+    "scheme_name": "Salima Town Scheme",
+    "zone": 4,
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:01.305Z"
+  }
+},
+{
+  "model": "eft_app.scheme",
+  "pk": 4,
+  "fields": {
+    "scheme_code": "10019523",
+    "scheme_name": "Dedza Boma Scheme",
+    "zone": 5,
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:01.456Z"
+  }
+},
+{
+  "model": "eft_app.scheme",
+  "pk": 5,
+  "fields": {
+    "scheme_code": "10019530",
+    "scheme_name": "Kasungu Boma Scheme",
+    "zone": 2,
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:01.700Z"
+  }
+},
+{
+  "model": "eft_app.supplier",
+  "pk": 1,
+  "fields": {
+    "supplier_code": "57819",
+    "supplier_name": "Bella Enterprise Pvt Ltd",
+    "bank": 1,
+    "account_number": "2004004560001",
+    "account_name": "Bella Enterprise Main",
+    "employee_number": "",
+    "national_id": "",
+    "credit_reference": "",
+    "cost_center": "",
+    "source": "",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:32:11.427Z"
+  }
+},
+{
+  "model": "eft_app.supplier",
+  "pk": 2,
+  "fields": {
+    "supplier_code": "3",
+    "supplier_name": "Anderson",
+    "bank": 2,
+    "account_number": "91000004",
+    "account_name": "Anderson Trading",
+    "employee_number": "",
+    "national_id": "",
+    "credit_reference": "",
+    "cost_center": "",
+    "source": "",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:32:11.585Z"
+  }
+},
+{
+  "model": "eft_app.supplier",
+  "pk": 3,
+  "fields": {
+    "supplier_code": "408",
+    "supplier_name": "CCSECUR",
+    "bank": 2,
+    "account_number": "12345612",
+    "account_name": "City Center Security",
+    "employee_number": "",
+    "national_id": "",
+    "credit_reference": "",
+    "cost_center": "",
+    "source": "",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:32:11.743Z"
+  }
+},
+{
+  "model": "eft_app.supplier",
+  "pk": 4,
+  "fields": {
+    "supplier_code": "391",
+    "supplier_name": "JIBSSEC",
+    "bank": 2,
+    "account_number": "12345678",
+    "account_name": "Jibs Security Services",
+    "employee_number": "",
+    "national_id": "",
+    "credit_reference": "",
+    "cost_center": "",
+    "source": "",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:32:11.885Z"
+  }
+},
+{
+  "model": "eft_app.supplier",
+  "pk": 5,
+  "fields": {
+    "supplier_code": "392",
+    "supplier_name": "EASYACC",
+    "bank": 2,
+    "account_number": "12345698",
+    "account_name": "Easy Access Solutions",
+    "employee_number": "",
+    "national_id": "",
+    "credit_reference": "",
+    "cost_center": "",
+    "source": "",
+    "is_active": true,
+    "created_by": 1,
+    "created_at": "2026-01-19T08:32:12.118Z"
+  }
+},
+{
+  "model": "eft_app.debitaccount",
+  "pk": 1,
+  "fields": {
+    "account_number": "13006161244",
+    "account_name": "(ORT) MG Other Recurrent Expenditure A/C",
+    "description": "CRWB (ORT) MG Other Recurrent Expenditure A/C",
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:02.864Z"
+  }
+},
+{
+  "model": "eft_app.debitaccount",
+  "pk": 2,
+  "fields": {
+    "account_number": "13006161245",
+    "account_name": "(ORT) MG Capital Expenditure A/C",
+    "description": "CRWB (ORT) MG Capital Expenditure A/C",
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:02.997Z"
+  }
+},
+{
+  "model": "eft_app.debitaccount",
+  "pk": 3,
+  "fields": {
+    "account_number": "13006161246",
+    "account_name": "(ORT) MG Salaries A/C",
+    "description": "CRWB (ORT) MG Salaries A/C",
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:03.155Z"
+  }
+},
+{
+  "model": "eft_app.debitaccount",
+  "pk": 4,
+  "fields": {
+    "account_number": "13006161247",
+    "account_name": "(ORT) MG Project Funds A/C",
+    "description": "CRWB (ORT) MG Project Funds A/C",
+    "is_active": true,
+    "created_at": "2026-01-19T08:25:03.347Z"
+  }
+},
+{
+  "model": "eft_app.debitaccount",
+  "pk": 5,
+  "fields": {
+    "account_number": "34456699805",
+    "account_name": "TEST",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-01-23T06:48:47.950Z"
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 3,
+  "fields": {
+    "batch_name": "sample",
+    "batch_reference": "CRWB-20260119-074100",
+    "currency": "MWK",
+    "total_amount": "100000.00",
+    "record_count": 1,
+    "status": "APPROVED",
+    "file_reference": "CRWB-19.01.2026",
+    "created_by": 4,
+    "created_at": "2026-01-19T07:41:00.316Z",
+    "approved_by": 5,
+    "approved_at": "2026-01-19T08:50:31.250Z",
+    "rejection_reason": "",
+    "generated_file": "0;sample;MWK;100000.00;0001\r\n1;0001;MWK;13006161244;SL_ZONE;100000.00;Bella Enterprise Pvt Ltd;10019524;;;;NBMAMWM0;2004004560001;;;12345;sample\r\n",
+    "generated_at": "2026-01-19T08:52:08.716Z"
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 4,
+  "fields": {
+    "batch_name": "sample 2",
+    "batch_reference": "CRWB-20260119-085417",
+    "currency": "MWK",
+    "total_amount": "6000000.00",
+    "record_count": 2,
+    "status": "APPROVED",
+    "file_reference": "CRWB-19.01.2026",
+    "created_by": 4,
+    "created_at": "2026-01-19T08:54:17.522Z",
+    "approved_by": 5,
+    "approved_at": "2026-01-19T08:57:29.029Z",
+    "rejection_reason": "",
+    "generated_file": "0;sample 2;MWK;6000000.00;0002\r\n1;0001;MWK;13006161245;MP_ZONE;2000000.00;EASYACC;10019525;;;;SBICMWM0;12345698;;;12;salary\r\n1;0002;MWK;13006161246;SL_ZONE;4000000.00;CCSECUR;10019524;;;;SBICMWM0;12345612;;;4;transport\r\n",
+    "generated_at": "2026-01-19T11:35:19.851Z"
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 6,
+  "fields": {
+    "batch_name": "TEST 2",
+    "batch_reference": "CRWB-20260123-062112",
+    "currency": "MWK",
+    "total_amount": "60000.00",
+    "record_count": 1,
+    "status": "PENDING",
+    "file_reference": "CRWB-23.01.2026",
+    "created_by": 4,
+    "created_at": "2026-01-23T06:21:12.749Z",
+    "approved_by": null,
+    "approved_at": null,
+    "rejection_reason": "",
+    "generated_file": "",
+    "generated_at": null
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 7,
+  "fields": {
+    "batch_name": "sample 2",
+    "batch_reference": "CRWB-20260123-080812",
+    "currency": "MWK",
+    "total_amount": "10001000.00",
+    "record_count": 2,
+    "status": "REJECTED",
+    "file_reference": "CRWB-23.01.2026",
+    "created_by": 4,
+    "created_at": "2026-01-23T08:08:12.771Z",
+    "approved_by": null,
+    "approved_at": null,
+    "rejection_reason": "Testing a Reject",
+    "generated_file": "",
+    "generated_at": null
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 1,
+  "fields": {
+    "batch": 3,
+    "sequence_number": "0001",
+    "debit_account": 1,
+    "supplier": 1,
+    "scheme": 3,
+    "zone": 4,
+    "amount": "100000.00",
+    "narration": "sample",
+    "reference_number": "12345",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "lilongwe",
+    "source_reference": "pwe1",
+    "created_at": "2026-01-19T08:48:25.939Z"
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 2,
+  "fields": {
+    "batch": 4,
+    "sequence_number": "0001",
+    "debit_account": 2,
+    "supplier": 5,
+    "scheme": 2,
+    "zone": 3,
+    "amount": "2000000.00",
+    "narration": "salary",
+    "reference_number": "12",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "lilongwe",
+    "source_reference": "1",
+    "created_at": "2026-01-19T08:55:47.251Z"
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 3,
+  "fields": {
+    "batch": 4,
+    "sequence_number": "0002",
+    "debit_account": 3,
+    "supplier": 3,
+    "scheme": 3,
+    "zone": 4,
+    "amount": "4000000.00",
+    "narration": "transport",
+    "reference_number": "4",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "salima",
+    "source_reference": "",
+    "created_at": "2026-01-19T08:56:33.619Z"
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 4,
+  "fields": {
+    "batch": 6,
+    "sequence_number": "0001",
+    "debit_account": 2,
+    "supplier": 1,
+    "scheme": 4,
+    "zone": 5,
+    "amount": "60000.00",
+    "narration": "TEST",
+    "reference_number": "12",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "DEDZA",
+    "source_reference": "",
+    "created_at": "2026-01-23T06:21:41.187Z"
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 5,
+  "fields": {
+    "batch": 7,
+    "sequence_number": "0001",
+    "debit_account": 3,
+    "supplier": 3,
+    "scheme": 1,
+    "zone": 1,
+    "amount": "10000000.00",
+    "narration": "salaries",
+    "reference_number": "12345",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "",
+    "source_reference": "",
+    "created_at": "2026-01-23T08:10:49.240Z"
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 6,
+  "fields": {
+    "batch": 7,
+    "sequence_number": "0002",
+    "debit_account": 1,
+    "supplier": 1,
+    "scheme": 2,
+    "zone": 3,
+    "amount": "1000.00",
+    "narration": "",
+    "reference_number": "",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "",
+    "source_reference": "",
+    "created_at": "2026-01-23T08:11:55.453Z"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 1,
+  "fields": {
+    "batch": 3,
+    "action": "SUBMITTED",
+    "user": 4,
+    "timestamp": "2026-01-19T08:49:36.614Z",
+    "remarks": "",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 2,
+  "fields": {
+    "batch": 3,
+    "action": "APPROVED",
+    "user": 5,
+    "timestamp": "2026-01-19T08:50:31.268Z",
+    "remarks": "ok",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 3,
+  "fields": {
+    "batch": 3,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-19T08:50:43.737Z",
+    "remarks": "Exported as CSV",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 4,
+  "fields": {
+    "batch": 3,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-19T08:51:32.970Z",
+    "remarks": "Exported as TXT",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 5,
+  "fields": {
+    "batch": 3,
+    "action": "EXPORTED",
+    "user": 4,
+    "timestamp": "2026-01-19T08:52:08.876Z",
+    "remarks": "Exported as TXT",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 6,
+  "fields": {
+    "batch": 4,
+    "action": "SUBMITTED",
+    "user": 4,
+    "timestamp": "2026-01-19T08:56:42.922Z",
+    "remarks": "",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 7,
+  "fields": {
+    "batch": 4,
+    "action": "APPROVED",
+    "user": 5,
+    "timestamp": "2026-01-19T08:57:29.057Z",
+    "remarks": "ok",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 8,
+  "fields": {
+    "batch": 4,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-19T08:57:42.608Z",
+    "remarks": "Exported as TXT",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 9,
+  "fields": {
+    "batch": 4,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-19T08:57:46.212Z",
+    "remarks": "Exported as CSV",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 10,
+  "fields": {
+    "batch": 4,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-19T11:34:19.737Z",
+    "remarks": "Exported as CSV",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 11,
+  "fields": {
+    "batch": 4,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-19T11:35:20.009Z",
+    "remarks": "Exported as TXT",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 12,
+  "fields": {
+    "batch": 6,
+    "action": "SUBMITTED",
+    "user": 4,
+    "timestamp": "2026-01-23T06:22:30.877Z",
+    "remarks": "",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 13,
+  "fields": {
+    "batch": 7,
+    "action": "SUBMITTED",
+    "user": 4,
+    "timestamp": "2026-01-23T08:12:08.045Z",
+    "remarks": "",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 14,
+  "fields": {
+    "batch": 7,
+    "action": "REJECTED",
+    "user": 5,
+    "timestamp": "2026-01-27T09:30:54.485Z",
+    "remarks": "Testing a Reject",
+    "ip_address": "127.0.0.1"
+  }
+}
+]
