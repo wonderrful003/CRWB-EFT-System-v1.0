@@ -1,4 +1,4 @@
-# eft_app/models.py - COMPLETE VERSION WITH ALL FIXES
+# eft_app/models.py - COMPLETE FIXED VERSION
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, RegexValidator
@@ -22,7 +22,6 @@ class Bank(models.Model):
     def __str__(self):
         return f"{self.bank_name} ({self.swift_code})"
     
-    # Add code field for bank code
     @property
     def code(self):
         """Extract bank code from SWIFT code (first 4 letters)"""
@@ -33,7 +32,7 @@ class Zone(models.Model):
     zone_code = models.CharField(max_length=10, unique=True)
     zone_name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    is_active = models.BooleanField(default=True)  # ADDED THIS FIELD
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -43,18 +42,20 @@ class Zone(models.Model):
     
     def __str__(self):
         return f"{self.zone_code} - {self.zone_name}"
-    
-    # Add property for user count (if you have users assigned to zones)
-    @property
-    def user_count(self):
-        """Count users assigned to this zone"""
-        return 0  # Implement this if you have user-zone relationships
 
 class Scheme(models.Model):
     """CRWB Schemes mapped to Zones"""
     scheme_code = models.CharField(max_length=10, unique=True)
     scheme_name = models.CharField(max_length=200)
     zone = models.ForeignKey(Zone, on_delete=models.PROTECT, related_name='schemes')
+    
+    # NEW FIELD FOR AUTO-COST CENTER
+    default_cost_center = models.CharField(
+        max_length=50, 
+        blank=True, 
+        help_text="Default cost center for this scheme"
+    )
+    
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -141,7 +142,7 @@ class EFTBatch(models.Model):
     # Relationships
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='batches_created')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)  # ADDED for tracking updates
+    updated_at = models.DateTimeField(auto_now=True)
     approved_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True, 
                                    related_name='batches_approved')
     approved_at = models.DateTimeField(null=True, blank=True)
@@ -164,9 +165,7 @@ class EFTBatch(models.Model):
         return f"{self.batch_reference} - {self.batch_name} ({self.status})"
     
     def save(self, *args, **kwargs):
-        # Auto-generate file reference if not provided
         if not self.file_reference and self.batch_name:
-            # Format: WTC01-31.01.2023 (we'll create a simple version)
             date_str = timezone.now().strftime('%d.%m.%Y')
             self.file_reference = f"CRWB-{date_str}"
         super().save(*args, **kwargs)
@@ -241,6 +240,10 @@ class EFTTransaction(models.Model):
                 self.cost_center = self.supplier.cost_center
             if not self.source_reference and self.supplier.source:
                 self.source_reference = self.supplier.source
+        
+        # AUTO-FILL COST CENTER FROM SCHEME
+        if not self.cost_center and self.scheme_id and self.scheme.default_cost_center:
+            self.cost_center = self.scheme.default_cost_center
         
         super().save(*args, **kwargs)
         

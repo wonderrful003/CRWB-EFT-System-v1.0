@@ -1,4 +1,4 @@
-# eft_app/urls.py
+# eft_app/urls.py - COMPLETE FIXED VERSION
 from django.urls import path
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
@@ -120,4 +120,8 @@ urlpatterns = [
     # ================ API URLS ================
     path('api/supplier/<int:supplier_id>/details/', views.get_supplier_details, name='supplier_details'),
     path('api/scheme/<int:scheme_id>/zone/', views.get_scheme_zone, name='scheme_zone'),
+    # NEW ENDPOINT FOR AUTO-COST CENTER
+    path('api/scheme/<int:scheme_id>/details/', views.get_scheme_details, name='scheme_details'),
+    # Alternative for string IDs
+    path('api/scheme/<str:scheme_id>/details/', views.get_scheme_details, name='scheme_details_str'),
 ]

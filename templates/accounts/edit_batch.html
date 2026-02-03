@@ -455,7 +455,76 @@
 {% block extra_js %}
 <script>
 $(document).ready(function() {
-    // Show bank details when supplier changes
+    console.log('Page loaded - Auto-cost center feature active');
+    
+    // ============ AUTO-FILL COST CENTER FROM SCHEME ============
+    $('#id_scheme').on('change', function() {
+        const schemeId = $(this).val();
+        const schemeText = $(this).find('option:selected').text();
+        
+        console.log('Scheme selected:', schemeId, '-', schemeText);
+        
+        if (!schemeId) {
+            $('#zone_display').val('');
+            return;
+        }
+        
+        // Show loading
+        $('#zone_display').val('Loading...');
+        
+        // Use the NEW endpoint that includes cost center
+        $.ajax({
+            url: `/api/scheme/${schemeId}/details/`,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                console.log('API Response:', data);
+                
+                if (data.success === false) {
+                    console.error('API Error:', data.error);
+                    $('#zone_display').val('Error loading scheme');
+                    return;
+                }
+                
+                // Update zone display
+                if (data.zone_code && data.zone_name) {
+                    $('#zone_display').val(`${data.zone_code} - ${data.zone_name}`);
+                }
+                
+                // AUTO-FILL COST CENTER
+                if (data.default_cost_center && data.default_cost_center.trim() !== '') {
+                    console.log('Auto-filling cost center:', data.default_cost_center);
+                    $('#id_cost_center').val(data.default_cost_center);
+                    
+                    // Visual feedback
+                    $('#id_cost_center').addClass('is-valid');
+                    setTimeout(() => {
+                        $('#id_cost_center').removeClass('is-valid');
+                    }, 2000);
+                    
+                    // Show notification
+                    showNotification(`Cost center auto-filled: ${data.default_cost_center}`, 'success');
+                } else {
+                    console.log('No default cost center for this scheme');
+                    showNotification('This scheme has no default cost center', 'info');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('API call failed:', textStatus, errorThrown);
+                
+                // Fallback to old endpoint
+                $.get(`/api/scheme/${schemeId}/zone/`, function(zoneData) {
+                    if (zoneData.zone_code && zoneData.zone_name) {
+                        $('#zone_display').val(`${zoneData.zone_code} - ${zoneData.zone_name}`);
+                    }
+                }).fail(function() {
+                    $('#zone_display').val('Error loading zone');
+                });
+            }
+        });
+    });
+    
+    // ============ SHOW BANK DETAILS ============
     $('#id_supplier').on('change', function() {
         const supplierId = $(this).val();
         if (supplierId) {
@@ -506,22 +575,8 @@ $(document).ready(function() {
             $('#bankDetails').hide();
         }
     });
-
-    // Show zone when scheme changes
-    $('#id_scheme').on('change', function() {
-        const schemeId = $(this).val();
-        if (schemeId) {
-            $.get(`/api/scheme/${schemeId}/zone/`, function(data) {
-                $('#zone_display').val(`${data.zone_code} - ${data.zone_name}`);
-            }).fail(function() {
-                $('#zone_display').val('');
-            });
-        } else {
-            $('#zone_display').val('');
-        }
-    });
-
-    // Add transaction via AJAX
+    
+    // ============ ADD TRANSACTION ============
     $('#addTransactionForm').on('submit', function(e) {
         e.preventDefault();
         const form = $(this);
@@ -551,7 +606,6 @@ $(document).ready(function() {
         $.post('{% url "add_transaction" batch.id %}', form.serialize())
             .done(function(response) {
                 if (response.success) {
-                    // Show success message
                     const successMsg = `
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <i class="fas fa-check-circle"></i> Transaction added successfully!
@@ -560,7 +614,6 @@ $(document).ready(function() {
                     `;
                     $('#addTransactionForm').before(successMsg);
                     
-                    // Reload page after 1 second
                     setTimeout(function() {
                         location.reload();
                     }, 1000);
@@ -574,8 +627,8 @@ $(document).ready(function() {
                 submitBtn.prop('disabled', false).html('<i class="fas fa-plus"></i> Add Transaction');
             });
     });
-
-    // Delete transaction
+    
+    // ============ DELETE TRANSACTION ============
     $('.delete-transaction').on('click', function() {
         if (!confirm('Are you sure you want to delete this RBM transaction? This action cannot be undone.')) {
             return;
@@ -590,7 +643,6 @@ $(document).ready(function() {
             data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
             success: function(response) {
                 if (response.success) {
-                    // Show fading effect and reload
                     row.addClass('table-danger');
                     row.fadeOut(500, function() {
                         location.reload();
@@ -604,25 +656,74 @@ $(document).ready(function() {
             }
         });
     });
-
-    // Auto-focus on first field
+    
+    // ============ HELPER FUNCTIONS ============
+    function showNotification(message, type = 'info') {
+        const alertClass = `alert-${type}`;
+        const icon = type === 'success' ? 'fa-check-circle' : 
+                     type === 'danger' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+        
+        const notification = $(`
+            <div class="alert ${alertClass} alert-dismissible fade show" 
+                 role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 300px;">
+                <i class="fas ${icon}"></i> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `);
+        
+        $('body').append(notification);
+        
+        setTimeout(function() {
+            notification.alert('close');
+        }, 3000);
+    }
+    
+    // Auto-focus
     $('#id_debit_account').focus();
+    
+    // Add clear button for cost center
+    $('#id_cost_center').after(`
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="clearCostCenter" title="Clear cost center">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `);
+    
+    $('#clearCostCenter').on('click', function() {
+        $('#id_cost_center').val('');
+        showNotification('Cost center cleared', 'info');
+    });
+    
+    console.log('Auto-cost center script loaded successfully');
 });
 </script>
 
 <style>
-.status-badge {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
+.is-valid {
+    border-color: #28a745 !important;
+    background-color: rgba(40, 167, 69, 0.1) !important;
 }
-.status-draft {
-    background-color: #ffc107;
-    color: #000;
+
+.alert {
+    animation: slideInRight 0.3s ease-out;
 }
-.table-hover tbody tr:hover {
-    background-color: rgba(13, 110, 253, 0.05);
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+#clearCostCenter {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 38px;
 }
 </style>
 {% endblock %}

@@ -1,4 +1,4 @@
-# eft_app/forms.py - COMPLETE VERSION WITH ALL FORMS
+# eft_app/forms.py - COMPLETE FIXED VERSION
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
@@ -29,17 +29,14 @@ class UserRegistrationForm(UserCreationForm):
         role = self.cleaned_data.get('role')
         if commit:
             user.save()
-            # Assign the user to the selected group/role
             group, created = Group.objects.get_or_create(name=role)
             user.groups.add(group)
-            # If System Admin, give staff access for django-admin
             if role == 'System Admin':
                 user.is_staff = True
                 user.save()
         return user
 
 class UserEditForm(forms.ModelForm):
-    """Form for editing existing users"""
     role = forms.ChoiceField(
         choices=[
             ('', 'Select Role'),
@@ -64,7 +61,6 @@ class UserEditForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Set initial role from user's groups
         if self.instance and self.instance.pk:
             user_groups = self.instance.groups.all()
             if user_groups.exists():
@@ -76,19 +72,14 @@ class UserEditForm(forms.ModelForm):
         if commit:
             user.save()
             
-            # Update role/group
             role = self.cleaned_data.get('role')
             if role:
-                # Clear existing groups
                 user.groups.clear()
-                # Add new group
                 group, created = Group.objects.get_or_create(name=role)
                 user.groups.add(group)
-                # Update staff status
                 user.is_staff = (role == 'System Admin')
                 user.save()
             elif not role and user.groups.exists():
-                # If role cleared, remove from groups
                 user.groups.clear()
         
         return user
@@ -115,12 +106,21 @@ class ZoneForm(forms.ModelForm):
 class SchemeForm(forms.ModelForm):
     class Meta:
         model = Scheme
-        fields = ['scheme_code', 'scheme_name', 'zone', 'is_active']
+        # INCLUDES NEW default_cost_center FIELD
+        fields = ['scheme_code', 'scheme_name', 'zone', 'default_cost_center', 'is_active']
         widgets = {
-            'scheme_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '8-digit code'}),
+            'scheme_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., SCHEME001'}),
             'scheme_name': forms.TextInput(attrs={'class': 'form-control'}),
             'zone': forms.Select(attrs={'class': 'form-control'}),
+            'default_cost_center': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'e.g., 03000101 Administration'
+            }),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['default_cost_center'].help_text = "Default cost center for this scheme"
 
 class SupplierForm(forms.ModelForm):
     class Meta:
@@ -197,7 +197,6 @@ class EFTTransactionForm(forms.ModelForm):
         self.fields['scheme'].queryset = Scheme.objects.filter(is_active=True)
         self.fields['debit_account'].queryset = DebitAccount.objects.filter(is_active=True)
         
-        # Add help text
         self.fields['reference_number'].help_text = "Payees Reference Number/Invoice Number"
         self.fields['narration'].help_text = "Description of the transaction (max 200 chars)"
 

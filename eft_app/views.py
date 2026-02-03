@@ -1,4 +1,4 @@
-# eft_app/views.py
+# eft_app/views.py - COMPLETE FIXED VERSION WITH AUTO-COST CENTER
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -40,7 +40,6 @@ def dashboard(request):
     """Role-based dashboard"""
     user = request.user
     
-    # Check user groups
     if user.is_superuser or user.groups.filter(name='System Admin').exists():
         return redirect('admin_dashboard')
     elif user.groups.filter(name='Accounts Personnel').exists():
@@ -60,19 +59,14 @@ def is_system_admin(user):
 def check_database_connection():
     """Check if database is connected properly"""
     try:
-        # Method 1: Try a simple query
         User.objects.count()
-        
-        # Method 2: Try raw SQL connection
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")
             cursor.fetchone()
-        
         return True, None
     except (OperationalError, DatabaseError) as e:
         return False, str(e)
     except Exception as e:
-        # Other errors might not be connection issues
         return True, str(e)
 
 def calculate_uptime():
@@ -98,17 +92,15 @@ def calculate_uptime():
         else:
             return "System initializing"
     except:
-        return "1 day"  # Default if calculation fails
+        return "1 day"
 
 @login_required
 @user_passes_test(is_system_admin)
 def admin_dashboard(request):
     """System Admin Dashboard"""
     try:
-        # Check database connection
         db_connected, db_error = check_database_connection()
         
-        # Get statistics with error handling
         stats = {}
         try:
             stats = {
@@ -131,13 +123,9 @@ def admin_dashboard(request):
                 'debit_accounts_count': 0,
             }
         
-        # Calculate system uptime
         uptime = calculate_uptime()
-        
-        # Get today's date
         today = timezone.now().date()
         
-        # Get today's batches and last batch
         today_batches_count = 0
         last_batch = None
         try:
@@ -146,16 +134,11 @@ def admin_dashboard(request):
             ).count()
             last_batch = EFTBatch.objects.order_by('-created_at').first()
         except (OperationalError, DatabaseError):
-            # If database error, use defaults
             pass
         
-        # Get current date
         current_date = timezone.now()
-        
-        # Get Python and Django versions
         python_version = platform.python_version()
         
-        # Prepare context
         context = {
             'stats': stats,
             'db_connected': db_connected,
@@ -165,14 +148,13 @@ def admin_dashboard(request):
             'last_batch': last_batch,
             'current_date': current_date,
             'python_version': python_version,
-            'django_version': '4.2.7',  # Update with your actual Django version
+            'django_version': '4.2.7',
             'debug': settings.DEBUG,
         }
         
         return render(request, 'admin/dashboard.html', context)
         
     except Exception as e:
-        # Fallback in case of catastrophic failure
         context = {
             'stats': {
                 'users_count': 0,
@@ -202,7 +184,6 @@ def api_system_activity(request):
     try:
         activities = []
         
-        # Check if database is connected
         db_connected, _ = check_database_connection()
         if not db_connected:
             return JsonResponse({
@@ -211,7 +192,6 @@ def api_system_activity(request):
                 'activities': []
             })
         
-        # Get recent user registrations
         try:
             recent_users = User.objects.order_by('-date_joined')[:3]
             for user in recent_users:
@@ -223,9 +203,8 @@ def api_system_activity(request):
                     'time': format_time_ago(user.date_joined)
                 })
         except:
-            pass  # Skip if query fails
+            pass
         
-        # Get recent banks added
         try:
             recent_banks = Bank.objects.order_by('-created_at')[:2]
             for bank in recent_banks:
@@ -237,9 +216,8 @@ def api_system_activity(request):
                     'time': format_time_ago(bank.created_at) if bank.created_at else 'Recently'
                 })
         except:
-            pass  # Skip if query fails
+            pass
         
-        # Get recent EFT batches
         try:
             recent_batches = EFTBatch.objects.filter(status='APPROVED').order_by('-approved_at')[:3]
             for batch in recent_batches:
@@ -251,9 +229,8 @@ def api_system_activity(request):
                     'time': format_time_ago(batch.approved_at) if batch.approved_at else 'Recently'
                 })
         except:
-            pass  # Skip if query fails
+            pass
         
-        # If no activities found, add a default one
         if not activities:
             activities.append({
                 'icon': 'fas fa-info-circle',
@@ -263,12 +240,11 @@ def api_system_activity(request):
                 'time': 'Just now'
             })
         
-        # Sort activities by time (most recent first)
         activities.sort(key=lambda x: x.get('time', ''), reverse=True)
         
         return JsonResponse({
             'success': True,
-            'activities': activities[:10],  # Return top 10
+            'activities': activities[:10],
             'timestamp': timezone.now().isoformat(),
             'db_connected': db_connected
         })
@@ -285,10 +261,8 @@ def api_system_activity(request):
 def api_system_status(request):
     """API endpoint for system status"""
     try:
-        # Check database connection
         db_connected, db_error = check_database_connection()
         
-        # Get active users count
         active_users = 0
         if db_connected:
             try:
@@ -296,7 +270,6 @@ def api_system_status(request):
             except:
                 pass
         
-        # Get basic system info
         system_info = {
             'python_version': platform.python_version(),
             'django_version': '4.2.7',
@@ -346,7 +319,6 @@ def user_list(request):
     """List all system users with search and filter"""
     users = User.objects.all().order_by('-date_joined')
     
-    # Search
     query = request.GET.get('q')
     if query:
         users = users.filter(
@@ -356,7 +328,6 @@ def user_list(request):
             Q(last_name__icontains=query)
         )
     
-    # Filter by role
     role_filter = request.GET.get('role')
     if role_filter:
         if role_filter == 'Superuser':
@@ -364,14 +335,12 @@ def user_list(request):
         elif role_filter in ['System Admin', 'Accounts Personnel', 'Authorizer']:
             users = users.filter(groups__name=role_filter)
     
-    # Filter by status
     status_filter = request.GET.get('status')
     if status_filter == 'active':
         users = users.filter(is_active=True)
     elif status_filter == 'inactive':
         users = users.filter(is_active=False)
     
-    # Sort
     sort_field = request.GET.get('sort', 'date_joined')
     order = request.GET.get('order', 'desc')
     
@@ -380,13 +349,11 @@ def user_list(request):
             sort_field = f'-{sort_field}'
         users = users.order_by(sort_field)
     
-    # Statistics
     total_users = users.count()
     active_users_count = users.filter(is_active=True).count()
     superusers_count = users.filter(is_superuser=True).count()
     recent_logins = users.filter(last_login__date=timezone.now().date()).count()
     
-    # Pagination
     paginator = Paginator(users, 20)
     page_number = request.GET.get('page')
     try:
@@ -422,7 +389,6 @@ def user_create(request):
                 user.set_password(form.cleaned_data['password1'])
                 user.save()
                 
-                # Assign to group
                 role = form.cleaned_data['role']
                 group = Group.objects.get(name=role)
                 user.groups.add(group)
@@ -440,7 +406,6 @@ def user_detail(request, user_id):
     """User detail view"""
     user_obj = get_object_or_404(User, id=user_id)
     
-    # Get user statistics
     batches_created = EFTBatch.objects.filter(created_by=user_obj).count()
     approved_batches = EFTBatch.objects.filter(approved_by=user_obj).count()
     
@@ -464,7 +429,6 @@ def user_edit(request, user_id):
             with db_transaction.atomic():
                 user = form.save()
                 
-                # Update group
                 role = form.cleaned_data.get('role')
                 if role:
                     user.groups.clear()
@@ -486,7 +450,6 @@ def user_delete(request, user_id):
     """Delete user"""
     user_obj = get_object_or_404(User, id=user_id)
     
-    # Prevent deleting self
     if user_obj == request.user:
         messages.error(request, 'You cannot delete your own account')
         return redirect('user_list')
@@ -522,7 +485,6 @@ def user_toggle_status(request, user_id):
     """Toggle user active status"""
     user_obj = get_object_or_404(User, id=user_id)
     
-    # Prevent toggling self or superusers
     if user_obj == request.user:
         messages.error(request, 'You cannot change your own status')
         return redirect('user_list')
@@ -575,14 +537,12 @@ def export_users(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Users')
         
-        # Write headers
         row_num = 0
         columns = ['Username', 'Full Name', 'Email', 'Role', 'Status', 'Last Login', 'Date Joined']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for user in users:
             row_num += 1
             role = 'Superuser' if user.is_superuser else (user.groups.first().name if user.groups.exists() else 'No Role')
@@ -654,7 +614,6 @@ class BankListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_queryset(self):
         queryset = Bank.objects.all().select_related('created_by')
         
-        # Search
         query = self.request.GET.get('q')
         if query:
             queryset = queryset.filter(
@@ -663,14 +622,12 @@ class BankListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                 Q(swift_code__icontains=query)
             )
         
-        # Filter by status
         status = self.request.GET.get('status')
         if status == 'active':
             queryset = queryset.filter(is_active=True)
         elif status == 'inactive':
             queryset = queryset.filter(is_active=False)
         
-        # Sort
         sort_field = self.request.GET.get('sort', 'created_at')
         order = self.request.GET.get('order', 'desc')
         
@@ -684,13 +641,12 @@ class BankListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Statistics
         banks = self.get_queryset()
         context.update({
             'sort_field': self.request.GET.get('sort', 'created_at'),
             'order': self.request.GET.get('order', 'desc'),
             'active_banks_count': banks.filter(is_active=True).count(),
-            'total_users_count': User.objects.filter(is_active=True).count(),  # This might need adjustment
+            'total_users_count': User.objects.filter(is_active=True).count(),
         })
         
         return context
@@ -781,14 +737,12 @@ def export_banks(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Banks')
         
-        # Write headers
         row_num = 0
         columns = ['Bank Name', 'Code', 'SWIFT Code', 'Status', 'Created By', 'Created At']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for bank in banks:
             row_num += 1
             ws.write(row_num, 0, bank.bank_name)
@@ -856,7 +810,6 @@ class ZoneListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
             scheme_count=Count('schemes', distinct=True)
         )
         
-        # Search
         query = self.request.GET.get('q')
         if query:
             queryset = queryset.filter(
@@ -865,14 +818,12 @@ class ZoneListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                 Q(description__icontains=query)
             )
         
-        # Filter by status
         status = self.request.GET.get('status')
         if status == 'active':
             queryset = queryset.filter(is_active=True)
         elif status == 'inactive':
             queryset = queryset.filter(is_active=False)
         
-        # Sort
         sort_field = self.request.GET.get('sort', 'created_at')
         order = self.request.GET.get('order', 'desc')
         
@@ -991,14 +942,12 @@ def export_zones(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Zones')
         
-        # Write headers
         row_num = 0
         columns = ['Zone Code', 'Zone Name', 'Description', 'Status', 'Created At']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for zone in zones:
             row_num += 1
             ws.write(row_num, 0, zone.zone_code)
@@ -1063,7 +1012,6 @@ class SupplierListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_queryset(self):
         queryset = Supplier.objects.all().select_related('bank', 'created_by')
         
-        # Search
         query = self.request.GET.get('q')
         if query:
             queryset = queryset.filter(
@@ -1073,19 +1021,16 @@ class SupplierListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                 Q(account_name__icontains=query)
             )
         
-        # Filter by bank
         bank_id = self.request.GET.get('bank')
         if bank_id:
             queryset = queryset.filter(bank_id=bank_id)
         
-        # Filter by status
         status = self.request.GET.get('status')
         if status == 'active':
             queryset = queryset.filter(is_active=True)
         elif status == 'inactive':
             queryset = queryset.filter(is_active=False)
         
-        # Sort
         sort_field = self.request.GET.get('sort', 'created_at')
         order = self.request.GET.get('order', 'desc')
         
@@ -1099,18 +1044,15 @@ class SupplierListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Statistics
         suppliers = self.get_queryset()
         total_suppliers = suppliers.count()
         active_suppliers = suppliers.filter(is_active=True).count()
         bank_count = suppliers.values('bank').distinct().count()
         
-        # Get payment count (transactions with this supplier)
         payment_count = EFTTransaction.objects.filter(
             supplier__in=suppliers
         ).count()
         
-        # All banks for filter dropdown
         context.update({
             'sort_field': self.request.GET.get('sort', 'created_at'),
             'order': self.request.GET.get('order', 'desc'),
@@ -1145,13 +1087,12 @@ class SupplierDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView
         context = super().get_context_data(**kwargs)
         supplier = self.get_object()
         
-        # Get transactions for this supplier
         transactions = EFTTransaction.objects.filter(supplier=supplier).select_related('batch', 'scheme')
         total_payments = transactions.count()
         total_amount = transactions.aggregate(Sum('amount'))['amount__sum'] or 0
         
         context.update({
-            'transactions': transactions[:10],  # Last 10 transactions
+            'transactions': transactions[:10],
             'total_payments': total_payments,
             'total_amount': total_amount,
         })
@@ -1228,14 +1169,12 @@ def export_suppliers(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Suppliers')
         
-        # Write headers
         row_num = 0
         columns = ['Supplier Code', 'Supplier Name', 'Bank', 'Account Number', 'Account Name', 'Status', 'Created By', 'Created At']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for supplier in suppliers:
             row_num += 1
             ws.write(row_num, 0, supplier.supplier_code)
@@ -1303,7 +1242,6 @@ class SchemeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_queryset(self):
         queryset = Scheme.objects.all().select_related('zone')
         
-        # Search
         query = self.request.GET.get('q')
         if query:
             queryset = queryset.filter(
@@ -1312,7 +1250,6 @@ class SchemeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                 Q(description__icontains=query)
             )
         
-        # Filter by zone
         zone_id = self.request.GET.get('zone')
         if zone_id:
             queryset = queryset.filter(zone_id=zone_id)
@@ -1321,14 +1258,12 @@ class SchemeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
             except Zone.DoesNotExist:
                 self.current_zone = None
         
-        # Filter by status
         status = self.request.GET.get('status')
         if status == 'active':
             queryset = queryset.filter(is_active=True)
         elif status == 'inactive':
             queryset = queryset.filter(is_active=False)
         
-        # Sort
         sort_field = self.request.GET.get('sort', 'created_at')
         order = self.request.GET.get('order', 'desc')
         
@@ -1342,18 +1277,15 @@ class SchemeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Statistics
         schemes = self.get_queryset()
         total_schemes = schemes.count()
         active_schemes_count = schemes.filter(is_active=True).count()
         zones_count = schemes.values('zone').distinct().count()
         
-        # Get transaction count
         transactions_count = EFTTransaction.objects.filter(
             scheme__in=schemes
         ).count()
         
-        # All zones for filter dropdown
         context.update({
             'sort_field': self.request.GET.get('sort', 'created_at'),
             'order': self.request.GET.get('order', 'desc'),
@@ -1364,7 +1296,6 @@ class SchemeListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
             'transactions_count': transactions_count,
         })
         
-        # Add current zone if filtering
         if hasattr(self, 'current_zone') and self.current_zone:
             context['current_zone'] = self.current_zone
         
@@ -1378,7 +1309,6 @@ class SchemeCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('scheme_list')
     
     def get_initial(self):
-        """Set initial zone if passed in URL"""
         initial = super().get_initial()
         zone_id = self.request.GET.get('zone')
         if zone_id:
@@ -1407,13 +1337,12 @@ class SchemeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         scheme = self.get_object()
         
-        # Get transactions for this scheme
         transactions = EFTTransaction.objects.filter(scheme=scheme).select_related('batch', 'supplier')
         total_transactions = transactions.count()
         total_amount = transactions.aggregate(Sum('amount'))['amount__sum'] or 0
         
         context.update({
-            'transactions': transactions[:10],  # Last 10 transactions
+            'transactions': transactions[:10],
             'total_transactions': total_transactions,
             'total_amount': total_amount,
         })
@@ -1471,14 +1400,14 @@ def export_schemes(request):
         response['Content-Disposition'] = 'attachment; filename="schemes.csv"'
         
         writer = csv.writer(response)
-        writer.writerow(['Scheme Code', 'Scheme Name', 'Zone', 'Description', 'Status', 'Created At'])
+        writer.writerow(['Scheme Code', 'Scheme Name', 'Zone', 'Default Cost Center', 'Status', 'Created At'])
         
         for scheme in schemes:
             writer.writerow([
                 scheme.scheme_code,
                 scheme.scheme_name,
                 f"{scheme.zone.zone_code} - {scheme.zone.zone_name}",
-                scheme.description or '',
+                scheme.default_cost_center or '',
                 'Active' if scheme.is_active else 'Inactive',
                 scheme.created_at.strftime('%Y-%m-%d')
             ])
@@ -1492,20 +1421,18 @@ def export_schemes(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Schemes')
         
-        # Write headers
         row_num = 0
-        columns = ['Scheme Code', 'Scheme Name', 'Zone', 'Description', 'Status', 'Created At']
+        columns = ['Scheme Code', 'Scheme Name', 'Zone', 'Default Cost Center', 'Status', 'Created At']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for scheme in schemes:
             row_num += 1
             ws.write(row_num, 0, scheme.scheme_code)
             ws.write(row_num, 1, scheme.scheme_name)
             ws.write(row_num, 2, f"{scheme.zone.zone_code} - {scheme.zone.zone_name}")
-            ws.write(row_num, 3, scheme.description or '')
+            ws.write(row_num, 3, scheme.default_cost_center or '')
             ws.write(row_num, 4, 'Active' if scheme.is_active else 'Inactive')
             ws.write(row_num, 5, scheme.created_at.strftime('%Y-%m-%d'))
         
@@ -1565,7 +1492,6 @@ class DebitAccountListView(LoginRequiredMixin, PermissionRequiredMixin, ListView
     def get_queryset(self):
         queryset = DebitAccount.objects.all()
         
-        # Search
         query = self.request.GET.get('q')
         if query:
             queryset = queryset.filter(
@@ -1574,14 +1500,12 @@ class DebitAccountListView(LoginRequiredMixin, PermissionRequiredMixin, ListView
                 Q(description__icontains=query)
             )
         
-        # Filter by status
         status = self.request.GET.get('status')
         if status == 'active':
             queryset = queryset.filter(is_active=True)
         elif status == 'inactive':
             queryset = queryset.filter(is_active=False)
         
-        # Sort
         sort_field = self.request.GET.get('sort', 'created_at')
         order = self.request.GET.get('order', 'desc')
         
@@ -1595,12 +1519,10 @@ class DebitAccountListView(LoginRequiredMixin, PermissionRequiredMixin, ListView
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Statistics
         accounts = self.get_queryset()
         total_accounts = accounts.count()
         active_accounts = accounts.filter(is_active=True).count()
         
-        # Get transaction count (batches using this account)
         transactions_count = EFTBatch.objects.filter(
             debit_account__in=accounts
         ).count()
@@ -1636,13 +1558,12 @@ class DebitAccountDetailView(LoginRequiredMixin, PermissionRequiredMixin, Detail
         context = super().get_context_data(**kwargs)
         account = self.get_object()
         
-        # Get batches using this account
         batches = EFTBatch.objects.filter(debit_account=account).order_by('-created_at')
         total_batches = batches.count()
         total_amount = batches.aggregate(Sum('total_amount'))['total_amount__sum'] or 0
         
         context.update({
-            'batches': batches[:10],  # Last 10 batches
+            'batches': batches[:10],
             'total_batches': total_batches,
             'total_amount': total_amount,
         })
@@ -1716,14 +1637,12 @@ def export_debit_accounts(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Debit Accounts')
         
-        # Write headers
         row_num = 0
         columns = ['Account Number', 'Account Name', 'Description', 'Status', 'Created At']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for account in accounts:
             row_num += 1
             ws.write(row_num, 0, account.account_number)
@@ -1788,7 +1707,6 @@ def accounts_dashboard(request):
     """Accounts Personnel Dashboard"""
     user = request.user
     
-    # Get batch statistics
     batches = EFTBatch.objects.filter(created_by=user)
     
     stats = {
@@ -1813,12 +1731,10 @@ def batch_list(request):
     """List all batches for accounts personnel with search and filter"""
     batches = EFTBatch.objects.filter(created_by=request.user).order_by('-created_at')
     
-    # Filter by status
     status_filter = request.GET.get('status', '')
     if status_filter:
         batches = batches.filter(status=status_filter)
     
-    # Search
     search_query = request.GET.get('search')
     if search_query:
         batches = batches.filter(
@@ -1826,22 +1742,18 @@ def batch_list(request):
             Q(batch_name__icontains=search_query)
         )
     
-    # Statistics
     total_batches = batches.count()
     total_amount = batches.aggregate(Sum('total_amount'))['total_amount__sum'] or Decimal('0')
     total_records = batches.aggregate(Sum('record_count'))['record_count__sum'] or 0
     avg_batch_size = batches.aggregate(Avg('record_count'))['record_count__avg'] or 0
     
-    # Counts by status for tabs
     draft_count = EFTBatch.objects.filter(created_by=request.user, status='DRAFT').count()
     pending_count = EFTBatch.objects.filter(created_by=request.user, status='PENDING').count()
     approved_count = EFTBatch.objects.filter(created_by=request.user, status='APPROVED').count()
     rejected_count = EFTBatch.objects.filter(created_by=request.user, status='REJECTED').count()
     
-    # Check if any batches can be deleted (only DRAFT status)
     can_delete_any = batches.filter(status='DRAFT').exists()
     
-    # Pagination
     paginator = Paginator(batches, 20)
     page_number = request.GET.get('page')
     try:
@@ -1903,7 +1815,6 @@ def edit_batch(request, batch_id):
     transactions = batch.transactions.all().order_by('sequence_number')
     
     if request.method == 'POST':
-        # Handle batch update
         form = EFTBatchForm(request.POST, instance=batch)
         if form.is_valid():
             form.save()
@@ -1941,7 +1852,6 @@ def add_transaction(request, batch_id):
                 transaction = form.save(commit=False)
                 transaction.batch = batch
                 
-                # Generate sequence number
                 last_seq = batch.transactions.order_by('sequence_number').last()
                 if last_seq:
                     next_seq = int(last_seq.sequence_number) + 1
@@ -1949,12 +1859,10 @@ def add_transaction(request, batch_id):
                     next_seq = 1
                 transaction.sequence_number = str(next_seq).zfill(4)
                 
-                # Auto-derive zone from scheme
                 transaction.zone = transaction.scheme.zone
                 
                 transaction.save()
                 
-                # Update batch totals
                 batch.update_totals()
                 
                 return JsonResponse({
@@ -1993,7 +1901,6 @@ def delete_transaction(request, batch_id, transaction_id):
         transaction.delete()
         batch.update_totals()
         
-        # Renumber remaining transactions
         transactions = batch.transactions.all().order_by('id')
         for idx, trans in enumerate(transactions, 1):
             trans.sequence_number = str(idx).zfill(4)
@@ -2016,7 +1923,6 @@ def submit_for_approval(request, batch_id):
         messages.error(request, 'Only DRAFT batches can be submitted for approval')
         return redirect('view_batch', batch_id=batch.id)
     
-    # Validate batch
     if batch.transactions.count() == 0:
         messages.error(request, 'Cannot submit empty batch')
         return redirect('edit_batch', batch_id=batch.id)
@@ -2025,7 +1931,6 @@ def submit_for_approval(request, batch_id):
         batch.status = 'PENDING'
         batch.save()
         
-        # Create audit log
         ApprovalAuditLog.objects.create(
             batch=batch,
             action='SUBMITTED',
@@ -2060,7 +1965,6 @@ def view_batch(request, batch_id):
     """View batch details"""
     batch = get_object_or_404(EFTBatch, id=batch_id)
     
-    # Check permission
     if not (batch.created_by == request.user or 
             request.user.has_perm('eft_app.can_approve_eft') or
             request.user.is_superuser):
@@ -2081,12 +1985,10 @@ def export_batch(request, batch_id, format='txt'):
     """Export EFT file (only for approved batches)"""
     batch = get_object_or_404(EFTBatch, id=batch_id)
     
-    # Check if user can export
     if not (request.user.has_perm('eft_app.can_export_eft') and batch.status == 'APPROVED'):
         messages.error(request, 'You do not have permission to export this file or batch is not approved')
         return redirect('view_batch', batch_id=batch.id)
     
-    # Generate file content
     try:
         generator = EFTGenerator()
         content = generator.generate_eft_file(batch)
@@ -2097,7 +1999,6 @@ def export_batch(request, batch_id, format='txt'):
         else:
             response = generator.export_to_txt(content, filename)
         
-        # Log the export
         ApprovalAuditLog.objects.create(
             batch=batch,
             action='EXPORTED',
@@ -2116,8 +2017,6 @@ def export_batch(request, batch_id, format='txt'):
 @user_passes_test(is_accounts_personnel)
 def export_batch_details(request, batch_id):
     """Export batch details as PDF"""
-    # This would require a PDF generation library like ReportLab or WeasyPrint
-    # For now, we'll redirect to CSV export
     return redirect('export_batch', batch_id=batch_id, format='csv')
 
 @login_required
@@ -2154,14 +2053,12 @@ def batch_export_all(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('My Batches')
         
-        # Write headers
         row_num = 0
         columns = ['Batch Reference', 'Batch Name', 'Status', 'Records', 'Total Amount (MWK)', 'Created', 'Last Updated']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for batch in batches:
             row_num += 1
             ws.write(row_num, 0, batch.batch_reference)
@@ -2217,14 +2114,12 @@ def batch_export_selected(request):
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Selected Batches')
         
-        # Write headers
         row_num = 0
         columns = ['Batch Reference', 'Batch Name', 'Status', 'Records', 'Total Amount (MWK)', 'Created', 'Last Updated']
         
         for col_num, column_title in enumerate(columns):
             ws.write(row_num, col_num, column_title)
         
-        # Write data
         for batch in batches:
             row_num += 1
             ws.write(row_num, 0, batch.batch_reference)
@@ -2265,10 +2160,8 @@ def is_authorizer(user):
 @user_passes_test(is_authorizer)
 def authorizer_dashboard(request):
     """Authorizer Dashboard"""
-    # Get pending batches
     pending_batches = EFTBatch.objects.filter(status='PENDING').order_by('-created_at')
     
-    # Get recent approvals
     recent_approvals = EFTBatch.objects.filter(
         status__in=['APPROVED', 'REJECTED']
     ).order_by('-approved_at')[:10]
@@ -2295,7 +2188,6 @@ def review_batch(request, batch_id):
     """Review batch for approval/rejection"""
     batch = get_object_or_404(EFTBatch, id=batch_id, status='PENDING')
     
-    # Prevent self-approval
     if batch.created_by == request.user:
         messages.error(request, 'You cannot approve or reject your own batch')
         return redirect('authorizer_dashboard')
@@ -2318,7 +2210,6 @@ def approve_batch(request, batch_id):
     """Approve EFT batch"""
     batch = get_object_or_404(EFTBatch, id=batch_id, status='PENDING')
     
-    # Prevent self-approval
     if batch.created_by == request.user:
         messages.error(request, 'You cannot approve your own batch')
         return redirect('authorizer_dashboard')
@@ -2332,7 +2223,6 @@ def approve_batch(request, batch_id):
                 batch.approved_at = timezone.now()
                 batch.save()
                 
-                # Create audit log
                 ApprovalAuditLog.objects.create(
                     batch=batch,
                     action='APPROVED',
@@ -2353,7 +2243,6 @@ def reject_batch(request, batch_id):
     """Reject EFT batch"""
     batch = get_object_or_404(EFTBatch, id=batch_id, status='PENDING')
     
-    # Prevent self-approval
     if batch.created_by == request.user:
         messages.error(request, 'You cannot reject your own batch')
         return redirect('authorizer_dashboard')
@@ -2366,7 +2255,6 @@ def reject_batch(request, batch_id):
                 batch.rejection_reason = form.cleaned_data['rejection_reason']
                 batch.save()
                 
-                # Create audit log
                 ApprovalAuditLog.objects.create(
                     batch=batch,
                     action='REJECTED',
@@ -2385,12 +2273,10 @@ def reject_batch(request, batch_id):
 @user_passes_test(is_authorizer)
 def authorizer_batch_list(request):
     """List all batches for authorizer"""
-    # Authorizer can see all batches except their own drafts
     batches = EFTBatch.objects.exclude(
         Q(status='DRAFT', created_by=request.user)
     ).order_by('-created_at')
     
-    # Filter by status if provided
     status_filter = request.GET.get('status', '')
     if status_filter:
         batches = batches.filter(status=status_filter)
@@ -2405,26 +2291,74 @@ def authorizer_batch_list(request):
 @login_required
 def get_supplier_details(request, supplier_id):
     """Get supplier details for AJAX"""
-    supplier = get_object_or_404(Supplier, id=supplier_id)
-    
-    data = {
-        'bank_name': supplier.bank.bank_name,
-        'swift_code': supplier.bank.swift_code,
-        'account_number': supplier.account_number,
-        'account_name': supplier.account_name,
-        'credit_reference': supplier.credit_reference,
-    }
-    
-    return JsonResponse(data)
+    try:
+        supplier = Supplier.objects.get(id=supplier_id)
+        
+        data = {
+            'bank_name': supplier.bank.bank_name,
+            'swift_code': supplier.bank.swift_code,
+            'account_number': supplier.account_number,
+            'account_name': supplier.account_name,
+            'credit_reference': supplier.credit_reference or '',
+            'cost_center': supplier.cost_center or '',
+        }
+        
+        return JsonResponse(data)
+    except Supplier.DoesNotExist:
+        return JsonResponse({'error': 'Supplier not found'}, status=404)
 
 @login_required
 def get_scheme_zone(request, scheme_id):
-    """Get zone for a scheme"""
-    scheme = get_object_or_404(Scheme, id=scheme_id)
-    
-    data = {
-        'zone_code': scheme.zone.zone_code,
-        'zone_name': scheme.zone.zone_name,
-    }
-    
-    return JsonResponse(data)
+    """Get zone for a scheme - BACKWARD COMPATIBILITY"""
+    try:
+        # First try to convert to integer (if it's an ID)
+        try:
+            scheme_id_int = int(scheme_id)
+            scheme = Scheme.objects.get(id=scheme_id_int)
+        except (ValueError, Scheme.DoesNotExist):
+            # If not found by ID, try to find by scheme_code
+            scheme = Scheme.objects.get(scheme_code=scheme_id)
+        
+        data = {
+            'zone_code': scheme.zone.zone_code,
+            'zone_name': scheme.zone.zone_name,
+        }
+        return JsonResponse(data)
+    except Scheme.DoesNotExist:
+        return JsonResponse({'error': 'Scheme not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+# NEW API ENDPOINT FOR AUTO-COST CENTER
+@login_required
+def get_scheme_details(request, scheme_id):
+    """Get scheme details including default cost center"""
+    try:
+        # First try to convert to integer (if it's an ID)
+        try:
+            scheme_id_int = int(scheme_id)
+            scheme = Scheme.objects.get(id=scheme_id_int)
+        except (ValueError, Scheme.DoesNotExist):
+            # If not found by ID, try to find by scheme_code
+            scheme = Scheme.objects.get(scheme_code=scheme_id)
+        
+        data = {
+            'success': True,
+            'zone_code': scheme.zone.zone_code,
+            'zone_name': scheme.zone.zone_name,
+            'default_cost_center': scheme.default_cost_center or '',
+            'scheme_code': scheme.scheme_code,
+            'scheme_name': scheme.scheme_name,
+        }
+        return JsonResponse(data)
+        
+    except Scheme.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': f'Scheme not found with ID/code: {scheme_id}'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Server error: {str(e)}'
+        }, status=500)
