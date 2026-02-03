@@ -91,7 +91,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$600000$uxdTMYsrdjTQevncYKDd5W$NBdY2QGUXbhnXImP4WG1jCIzFppGJuhbe9ObXjnMJZE=",
-    "last_login": "2026-01-23T06:32:53.731Z",
+    "last_login": "2026-02-03T07:48:52.588Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
@@ -109,7 +109,7 @@
   "pk": 3,
   "fields": {
     "password": "pbkdf2_sha256$600000$XnxVfFNUcGIO5rhYXIxK1J$e2y3q7WZnWExXPdCelT0LyTWQgEJU+Cg1nC1gQUOuSs=",
-    "last_login": "2026-01-27T07:06:27.149Z",
+    "last_login": "2026-02-03T07:47:50.744Z",
     "is_superuser": false,
     "username": "sysadmin",
     "first_name": "System",
@@ -129,7 +129,7 @@
   "pk": 4,
   "fields": {
     "password": "pbkdf2_sha256$600000$rRuqt0UytIfEdtnpOUpgXi$rds32cawv3siiEmRqd8Pj1U737Y3r42qMCwxYiYD0KI=",
-    "last_login": "2026-01-27T08:49:36.348Z",
+    "last_login": "2026-02-03T07:39:34.376Z",
     "is_superuser": false,
     "username": "accounts",
     "first_name": "Accounts",
@@ -149,7 +149,7 @@
   "pk": 5,
   "fields": {
     "password": "pbkdf2_sha256$600000$l8awJGJM14Bk7ROVjbv83Z$rbsZXADkzkwHD8rP71Wia9YRIrHkQg3yiPV9YI/2NYE=",
-    "last_login": "2026-01-27T09:29:45.290Z",
+    "last_login": "2026-01-29T13:58:16.222Z",
     "is_superuser": false,
     "username": "authorizer",
     "first_name": "Auth",
@@ -166,24 +166,97 @@
 },
 {
   "model": "auth.user",
-  "pk": 6,
+  "pk": 7,
   "fields": {
-    "password": "pbkdf2_sha256$600000$Q87h53aBMmUrHI6YIAyMCm$TYVx3gweX8m9tAByLXuXBILji5dFzHxoT2dgjnMyEgo=",
-    "last_login": null,
+    "password": "pbkdf2_sha256$600000$2mpJ8DO3vkcLzmLXCcAe8a$TkTBoA8U+r4Talj+r4MAsnf9jXbMHWgmNYfGzh29G1U=",
+    "last_login": "2026-01-29T08:18:14.745Z",
     "is_superuser": false,
-    "username": "demo",
-    "first_name": "Demo",
-    "last_name": "User",
-    "email": "demo@crwb.gov.mw",
-    "is_staff": false,
+    "username": "petros",
+    "first_name": "PETROS",
+    "last_name": "LIGHT",
+    "email": "lightpetros5@gmail.com",
+    "is_staff": true,
     "is_active": true,
-    "date_joined": "2026-01-19T06:39:22.833Z",
+    "date_joined": "2026-01-27T12:39:56Z",
     "groups": [
+      2
+    ],
+    "user_permissions": [
       1,
       2,
-      3
-    ],
-    "user_permissions": []
+      3,
+      4,
+      9,
+      10,
+      11,
+      12,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      51,
+      52,
+      53,
+      54,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      37,
+      38,
+      34,
+      35,
+      36,
+      55,
+      56,
+      57,
+      58,
+      47,
+      48,
+      49,
+      50,
+      43,
+      44,
+      45,
+      46,
+      39,
+      40,
+      41,
+      42,
+      21,
+      22,
+      23,
+      24
+    ]
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "237eqk1ju54cuixwn99zsts3kgcqulto",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlm2E9YbSnrOYO3H4ABypDipEHeHSCmgfTPzXibRupS0tjynUc3JBHP43ZjkkesG9E71NlmZ6jKPbDfF7rTZy6T5ed7dv4NCrXzrIRNxVBQE6RkiIjGGSASZwQ-CqAwhenTspe8Ujs5hB4yE7kqSzfsD-kQ4PQ:1vnB8G:lKkGbAP1I1xC7GcJwbrEIcqMHFvFHZ7wxO5fHeAG3h0",
+    "expire_date": "2026-02-03T08:47:32.215Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4v5xzg5bsipunu8yojqhrwfv5kcqo71a",
+  "fields": {
+    "session_data": ".eJxVjDEOwjAMRe-SGUWhwWlgZO8ZIju2SQE1UtNOiLtDpQ6w_vfef5mE61LS2mROI5uLAXP43QjzQ6YN8B2nW7W5Tss8kt0Uu9Nmh8ryvO7u30HBVr51F4BRgAiiBmWSTHDMsVMlFtAYMPfeqZ4IOfroHGXUnoh9cGdgNe8PMOQ55w:1vlOze:s6jwhqn06txyOgbAyLG5i6ubYelnnsS4A5BSVLX16zY",
+    "expire_date": "2026-01-29T11:11:18.971Z"
   }
 },
 {
@@ -196,6 +269,22 @@
 },
 {
   "model": "sessions.session",
+  "pk": "7zkm2yeymmm1eubqquxuquiemow9ort7",
+  "fields": {
+    "session_data": ".eJxVjDEOwjAMRe-SGUWhwWlgZO8ZIju2SQE1UtNOiLtDpQ6w_vfef5mE61LS2mROI5uLAXP43QjzQ6YN8B2nW7W5Tss8kt0Uu9Nmh8ryvO7u30HBVr51F4BRgAiiBmWSTHDMsVMlFtAYMPfeqZ4IOfroHGXUnoh9cGdgNe8PMOQ55w:1vlLkz:k2-I9akfrGeizgbF1iGm750s7_L_FyOPBE5CRNjS6LM",
+    "expire_date": "2026-01-29T07:43:57.194Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "86d774o3av2fio225ulqn18r2e28kroh",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vnBAT:uH00nVUlsBM-vKHar8NQ3zVjpOHP40-k6J6-6VKT8tQ",
+    "expire_date": "2026-02-03T08:49:49.460Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "8mxfwthl4g64wp9gkytrdiaas94uoife",
   "fields": {
     "session_data": ".eJxVjMsOwiAQRf-FtSEMTHm4dO83EIaHVA0kpV0Z_12bdKHbe865L-bDtla_jbz4ObEzU-z0u1GIj9x2kO6h3TqPva3LTHxX-EEHv_aUn5fD_TuoYdRvPUFRSCByIQRyxVoTwJA0ZLGQiBGyBswBnbARHSotwSUpidykCRJ7fwDgfDeb:1vhnar:rv4byQf9KAMTghG6Wk9Et7NeSbG7hgmP0ya6uU1s4FQ",
@@ -204,10 +293,26 @@
 },
 {
   "model": "sessions.session",
+  "pk": "c5hrsdsdxs4dc1d9ytrt47wkgbjs8tr8",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlm2E9YbSnrOYO3H4ABypDipEHeHSCmgfTPzXibRupS0tjynUc3JBHP43ZjkkesG9E71NlmZ6jKPbDfF7rTZy6T5ed7dv4NCrXzrIRNxVBQE6RkiIjGGSASZwQ-CqAwhenTspe8Ujs5hB4yE7kqSzfsD-kQ4PQ:1vnBBA:MD6dGMEadocYR2X_Q7I0JMbX8AfFPPtHU15iOnUhkUs",
+    "expire_date": "2026-02-03T08:50:32.532Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "eql793zmfee9p0nx6hjfqh3hgrlkqi71",
   "fields": {
     "session_data": ".eJxVjDEOwjAMRe-SGUWhwWlgZO8ZIju2SQE1UtNOiLtDpQ6w_vfef5mE61LS2mROI5uLAXP43QjzQ6YN8B2nW7W5Tss8kt0Uu9Nmh8ryvO7u30HBVr51F4BRgAiiBmWSTHDMsVMlFtAYMPfeqZ4IOfroHGXUnoh9cGdgNe8PMOQ55w:1vhl50:F-9A7MbPJZAf8gplsgueDoZF_kxpCid5W34_vKWfdcE",
     "expire_date": "2026-01-19T09:57:46.400Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "g4zj2b34st4q02zxms0tytf0xgq26d6z",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vliN5:Eg74NehbMlVC3wYAXWm07IX3mU-RcA_0AksLZWOGmRw",
+    "expire_date": "2026-01-30T07:52:47.164Z"
   }
 },
 {
@@ -228,6 +333,30 @@
 },
 {
   "model": "sessions.session",
+  "pk": "m6j4v4spjnhks5jzxh5oq14x5egby5gl",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vlRNK:5O8pQDIKX9L4mcKk-4lMoppUDTNfAF5vFGYFw3KLuFc",
+    "expire_date": "2026-01-29T13:43:54.544Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "marhw74ys032brz7rwc7ozda49h16b6l",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vlOyi:4erep6Ksdhd7GWHWMOx56Y6cSNaSCHebQc4uz3fm3NE",
+    "expire_date": "2026-01-29T11:10:20.261Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "nxkjgnfhx77f0fihc4htmk7spg030bva",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEMTHm4dO83EIaHVA0kpV0Z_12bdKHbe865L-bDtla_jbz4ObEzU-z0u1GIj9x2kO6h3TqPva3LTHxX-EEHv_aUn5fD_TuoYdRvPUFRSCByIQRyxVoTwJA0ZLGQiBGyBswBnbARHSotwSUpidykCRJ7fwDgfDeb:1vlSz5:WWt-WsWQk279DMoU3fyInKroQNqypeQo7g7VP44iMeQ",
+    "expire_date": "2026-01-29T15:26:59.144Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "ttp5di1kv2kq23hbqahbyl55fg69mch0",
   "fields": {
     "session_data": ".eJxVjDsOwjAQBe_iGlm2E9YbSnrOYO3H4ABypDipEHeHSCmgfTPzXibRupS0tjynUc3JBHP43ZjkkesG9E71NlmZ6jKPbDfF7rTZy6T5ed7dv4NCrXzrIRNxVBQE6RkiIjGGSASZwQ-CqAwhenTspe8Ujs5hB4yE7kqSzfsD-kQ4PQ:1vjAyO:IxfP5kgDkutsmnZS_nzQqy-gMUf6GMLf2YvdMXQwJBQ",
@@ -236,10 +365,34 @@
 },
 {
   "model": "sessions.session",
+  "pk": "wix285oeagnrzp7yewge0yld7dzxbfz4",
+  "fields": {
+    "session_data": ".eJxVjEsOwjAMBe-SNYrcJnVcluw5Q-XYLi2gRupnhbg7VOoCtm9m3st1vK1Dty02d6O6s0vu9LtllodNO9A7T7fipUzrPGa_K_6gi78WteflcP8OBl6Gbw1GABoZ-gakl2BVG2KKiBVjqxzrnLFpIIPVAqEXItSUsCJJYkS1e38A2Dg3cw:1vlNEF:6VHxbn6_C-tIA9Xqqkkn66G7GJOtNvXSq3vByvJdqms",
+    "expire_date": "2026-01-29T09:18:15.548Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "yu0pp2of11ik251vaggz1v8a58lip5y7",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlm2E9YbSnrOYO3H4ABypDipEHeHSCmgfTPzXibRupS0tjynUc3JBHP43ZjkkesG9E71NlmZ6jKPbDfF7rTZy6T5ed7dv4NCrXzrIRNxVBQE6RkiIjGGSASZwQ-CqAwhenTspe8Ujs5hB4yE7kqSzfsD-kQ4PQ:1vkjFx:PoZ6B1eL_2rIp7VF1YDtsHJbwTwCB6vvYawpE82wC5A",
+    "expire_date": "2026-01-27T14:37:21.814Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "yyvly7yei7cwk02fp9arwqk07tqj48ee",
   "fields": {
     "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vhbTf:PmZQYVSYIM1wx-ePR449OgiNYfkhzbUPjYSBjknd-C0",
     "expire_date": "2026-01-18T23:42:35.832Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zus3gbix4c75jh9rw1l4obhrrw9suitd",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEwPNq6dO83kIEZpGogKe3K-O_apAvd3nPOfYmA21rC1nkJM4mzsOL0u0VMD647oDvWW5Op1XWZo9wVedAur434eTncv4OCvXxrDYk4e0-Ao3EeMmeNEzmryedsjEODwFYNabIZxgGi0skoS6y8tqTE-wPxmDfA:1vlMk9:cuWZ74Yr-HpQcA-1rrE6QujxOPT4T3jYTSAqAFq26Tc",
+    "expire_date": "2026-01-29T08:47:09.942Z"
   }
 },
 {
@@ -298,12 +451,24 @@
   }
 },
 {
+  "model": "eft_app.bank",
+  "pk": 6,
+  "fields": {
+    "bank_name": "wonder",
+    "swift_code": "WNTMWM12344",
+    "is_active": false,
+    "created_by": 3,
+    "created_at": "2026-01-27T12:02:07.455Z"
+  }
+},
+{
   "model": "eft_app.zone",
   "pk": 1,
   "fields": {
     "zone_code": "HQ_ADMIN",
     "zone_name": "Headquarters (Lilongwe)",
     "description": "",
+    "is_active": true,
     "created_at": "2026-01-19T08:25:00.184Z"
   }
 },
@@ -314,6 +479,7 @@
     "zone_code": "KS_ZONE",
     "zone_name": "Kasungu Zone",
     "description": "",
+    "is_active": true,
     "created_at": "2026-01-19T08:25:00.347Z"
   }
 },
@@ -324,6 +490,7 @@
     "zone_code": "MP_ZONE",
     "zone_name": "Mponela Zone",
     "description": "",
+    "is_active": true,
     "created_at": "2026-01-19T08:25:00.504Z"
   }
 },
@@ -334,6 +501,7 @@
     "zone_code": "SL_ZONE",
     "zone_name": "Salima Zone",
     "description": "",
+    "is_active": true,
     "created_at": "2026-01-19T08:25:00.657Z"
   }
 },
@@ -344,6 +512,7 @@
     "zone_code": "DZ_ZONE",
     "zone_name": "Dedza Zone",
     "description": "",
+    "is_active": true,
     "created_at": "2026-01-19T08:25:00.805Z"
   }
 },
@@ -354,6 +523,7 @@
     "scheme_code": "03000101",
     "scheme_name": "HQ Administration",
     "zone": 1,
+    "default_cost_center": "03000101",
     "is_active": true,
     "created_at": "2026-01-19T08:25:00.947Z"
   }
@@ -365,6 +535,7 @@
     "scheme_code": "10019525",
     "scheme_name": "Mponela Main Scheme",
     "zone": 3,
+    "default_cost_center": "",
     "is_active": true,
     "created_at": "2026-01-19T08:25:01.114Z"
   }
@@ -376,6 +547,7 @@
     "scheme_code": "10019524",
     "scheme_name": "Salima Town Scheme",
     "zone": 4,
+    "default_cost_center": "",
     "is_active": true,
     "created_at": "2026-01-19T08:25:01.305Z"
   }
@@ -387,6 +559,7 @@
     "scheme_code": "10019523",
     "scheme_name": "Dedza Boma Scheme",
     "zone": 5,
+    "default_cost_center": "",
     "is_active": true,
     "created_at": "2026-01-19T08:25:01.456Z"
   }
@@ -398,6 +571,7 @@
     "scheme_code": "10019530",
     "scheme_name": "Kasungu Boma Scheme",
     "zone": 2,
+    "default_cost_center": "",
     "is_active": true,
     "created_at": "2026-01-19T08:25:01.700Z"
   }
@@ -563,13 +737,15 @@
     "record_count": 1,
     "status": "APPROVED",
     "file_reference": "CRWB-19.01.2026",
+    "debit_account": null,
     "created_by": 4,
     "created_at": "2026-01-19T07:41:00.316Z",
+    "updated_at": "2026-01-29T11:38:40.089Z",
     "approved_by": 5,
     "approved_at": "2026-01-19T08:50:31.250Z",
     "rejection_reason": "",
     "generated_file": "0;sample;MWK;100000.00;0001\r\n1;0001;MWK;13006161244;SL_ZONE;100000.00;Bella Enterprise Pvt Ltd;10019524;;;;NBMAMWM0;2004004560001;;;12345;sample\r\n",
-    "generated_at": "2026-01-19T08:52:08.716Z"
+    "generated_at": "2026-01-27T12:36:31.128Z"
   }
 },
 {
@@ -583,13 +759,15 @@
     "record_count": 2,
     "status": "APPROVED",
     "file_reference": "CRWB-19.01.2026",
+    "debit_account": null,
     "created_by": 4,
     "created_at": "2026-01-19T08:54:17.522Z",
+    "updated_at": "2026-01-29T11:38:40.089Z",
     "approved_by": 5,
     "approved_at": "2026-01-19T08:57:29.029Z",
     "rejection_reason": "",
     "generated_file": "0;sample 2;MWK;6000000.00;0002\r\n1;0001;MWK;13006161245;MP_ZONE;2000000.00;EASYACC;10019525;;;;SBICMWM0;12345698;;;12;salary\r\n1;0002;MWK;13006161246;SL_ZONE;4000000.00;CCSECUR;10019524;;;;SBICMWM0;12345612;;;4;transport\r\n",
-    "generated_at": "2026-01-19T11:35:19.851Z"
+    "generated_at": "2026-01-29T13:58:33.027Z"
   }
 },
 {
@@ -601,13 +779,15 @@
     "currency": "MWK",
     "total_amount": "60000.00",
     "record_count": 1,
-    "status": "PENDING",
+    "status": "REJECTED",
     "file_reference": "CRWB-23.01.2026",
+    "debit_account": null,
     "created_by": 4,
     "created_at": "2026-01-23T06:21:12.749Z",
+    "updated_at": "2026-01-29T11:38:40.089Z",
     "approved_by": null,
     "approved_at": null,
-    "rejection_reason": "",
+    "rejection_reason": "NOT OKY",
     "generated_file": "",
     "generated_at": null
   }
@@ -623,11 +803,123 @@
     "record_count": 2,
     "status": "REJECTED",
     "file_reference": "CRWB-23.01.2026",
+    "debit_account": null,
     "created_by": 4,
     "created_at": "2026-01-23T08:08:12.771Z",
+    "updated_at": "2026-01-29T11:38:40.089Z",
     "approved_by": null,
     "approved_at": null,
     "rejection_reason": "Testing a Reject",
+    "generated_file": "",
+    "generated_at": null
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 8,
+  "fields": {
+    "batch_name": "March Supplies",
+    "batch_reference": "CRWB-20260127-123417",
+    "currency": "MWK",
+    "total_amount": "1000.00",
+    "record_count": 1,
+    "status": "APPROVED",
+    "file_reference": "CRWB-27.01.2026",
+    "debit_account": null,
+    "created_by": 4,
+    "created_at": "2026-01-27T12:34:17.812Z",
+    "updated_at": "2026-01-29T11:38:40.089Z",
+    "approved_by": 5,
+    "approved_at": "2026-01-27T12:36:14.416Z",
+    "rejection_reason": "",
+    "generated_file": "",
+    "generated_at": null
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 9,
+  "fields": {
+    "batch_name": "printing",
+    "batch_reference": "CRWB-20260127-124507",
+    "currency": "MWK",
+    "total_amount": "1000000.00",
+    "record_count": 1,
+    "status": "APPROVED",
+    "file_reference": "CRWB-27.01.2026",
+    "debit_account": null,
+    "created_by": 7,
+    "created_at": "2026-01-27T12:45:07.878Z",
+    "updated_at": "2026-01-29T11:38:40.089Z",
+    "approved_by": 5,
+    "approved_at": "2026-01-27T12:49:12.139Z",
+    "rejection_reason": "",
+    "generated_file": "0;printing;MWK;1000000.00;0001\r\n1;0001;MWK;13006161244;HQ_ADMIN;1000000.00;Anderson;03000101;;;;SBICMWM0;91000004;;;112222;description\r\n",
+    "generated_at": "2026-01-27T12:49:44.835Z"
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 10,
+  "fields": {
+    "batch_name": "poly",
+    "batch_reference": "CRWB-20260203-063827",
+    "currency": "MWK",
+    "total_amount": "0.00",
+    "record_count": 0,
+    "status": "DRAFT",
+    "file_reference": "CRWB-03.02.2026",
+    "debit_account": null,
+    "created_by": 4,
+    "created_at": "2026-02-03T06:38:27.427Z",
+    "updated_at": "2026-02-03T06:38:27.427Z",
+    "approved_by": null,
+    "approved_at": null,
+    "rejection_reason": "",
+    "generated_file": "",
+    "generated_at": null
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 11,
+  "fields": {
+    "batch_name": "sample 4",
+    "batch_reference": "CRWB-20260203-073947",
+    "currency": "MWK",
+    "total_amount": "0.00",
+    "record_count": 0,
+    "status": "DRAFT",
+    "file_reference": "CRWB-03.02.2026",
+    "debit_account": null,
+    "created_by": 4,
+    "created_at": "2026-02-03T07:39:47.846Z",
+    "updated_at": "2026-02-03T07:39:47.846Z",
+    "approved_by": null,
+    "approved_at": null,
+    "rejection_reason": "",
+    "generated_file": "",
+    "generated_at": null
+  }
+},
+{
+  "model": "eft_app.eftbatch",
+  "pk": 12,
+  "fields": {
+    "batch_name": "sample 5",
+    "batch_reference": "CRWB-20260203-074441",
+    "currency": "MWK",
+    "total_amount": "0.00",
+    "record_count": 0,
+    "status": "DRAFT",
+    "file_reference": "CRWB-03.02.2026",
+    "debit_account": null,
+    "created_by": 4,
+    "created_at": "2026-02-03T07:44:41.025Z",
+    "updated_at": "2026-02-03T07:44:41.025Z",
+    "approved_by": null,
+    "approved_at": null,
+    "rejection_reason": "",
     "generated_file": "",
     "generated_at": null
   }
@@ -750,6 +1042,46 @@
     "cost_center": "",
     "source_reference": "",
     "created_at": "2026-01-23T08:11:55.453Z"
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 7,
+  "fields": {
+    "batch": 8,
+    "sequence_number": "0001",
+    "debit_account": 5,
+    "supplier": 1,
+    "scheme": 3,
+    "zone": 4,
+    "amount": "1000.00",
+    "narration": "Supplies",
+    "reference_number": "2028",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "salima",
+    "source_reference": "",
+    "created_at": "2026-01-27T12:35:30.006Z"
+  }
+},
+{
+  "model": "eft_app.efttransaction",
+  "pk": 8,
+  "fields": {
+    "batch": 9,
+    "sequence_number": "0001",
+    "debit_account": 1,
+    "supplier": 2,
+    "scheme": 1,
+    "zone": 1,
+    "amount": "1000000.00",
+    "narration": "description",
+    "reference_number": "112222",
+    "employee_number": "",
+    "national_id": "",
+    "cost_center": "lilongwe",
+    "source_reference": "",
+    "created_at": "2026-01-27T12:47:01.311Z"
   }
 },
 {
@@ -917,6 +1249,102 @@
     "user": 5,
     "timestamp": "2026-01-27T09:30:54.485Z",
     "remarks": "Testing a Reject",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 15,
+  "fields": {
+    "batch": 8,
+    "action": "SUBMITTED",
+    "user": 4,
+    "timestamp": "2026-01-27T12:35:39.520Z",
+    "remarks": "",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 16,
+  "fields": {
+    "batch": 8,
+    "action": "APPROVED",
+    "user": 5,
+    "timestamp": "2026-01-27T12:36:14.417Z",
+    "remarks": "ok",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 17,
+  "fields": {
+    "batch": 3,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-27T12:36:31.131Z",
+    "remarks": "Exported as CSV",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 18,
+  "fields": {
+    "batch": 9,
+    "action": "SUBMITTED",
+    "user": 7,
+    "timestamp": "2026-01-27T12:47:35.721Z",
+    "remarks": "",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 19,
+  "fields": {
+    "batch": 9,
+    "action": "APPROVED",
+    "user": 5,
+    "timestamp": "2026-01-27T12:49:12.142Z",
+    "remarks": "seen",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 20,
+  "fields": {
+    "batch": 9,
+    "action": "EXPORTED",
+    "user": 5,
+    "timestamp": "2026-01-27T12:49:44.839Z",
+    "remarks": "Exported as TXT",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 21,
+  "fields": {
+    "batch": 6,
+    "action": "REJECTED",
+    "user": 5,
+    "timestamp": "2026-01-29T06:43:55.367Z",
+    "remarks": "NOT OKY",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "eft_app.approvalauditlog",
+  "pk": 22,
+  "fields": {
+    "batch": 4,
+    "action": "EXPORTED",
+    "user": 4,
+    "timestamp": "2026-01-29T13:58:33.098Z",
+    "remarks": "Exported as TXT",
     "ip_address": "127.0.0.1"
   }
 }
