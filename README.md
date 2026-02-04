@@ -1,627 +1,438 @@
-# CRWB EFT System v1.0 Documentation
+# CRWB EFT System v1.0
 
-## Electronic Funds Transfer System with RBM Compliance
+## 🏦 Electronic Funds Transfer System with RBM Compliance
 
-### Overview
-The CRWB EFT System is a Django-based web application designed for electronic payment processing with banking system compliance requirements. It streamlines payment batch creation, approval workflows, and generates compliant payment files for banking systems.
+### **One-Command Setup • Complete Data Included • Ready-to-Run**
 
-### Technology Stack
-- **Backend Framework**: Django 4.2
+---
+
+## 🚀 **GET STARTED IN 60 SECONDS**
+
+### **Windows Users (Recommended):**
+```cmd
+# 1. Clone the repository
+git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
+cd CRWB-EFT-System-v1.0
+
+# 2. Run ONE command (does everything)
+launch.bat
+```
+
+### **What Happens Automatically:**
+✅ Creates virtual environment  
+✅ Installs 44+ dependencies  
+✅ Sets up database  
+✅ Loads **YOUR original data** (6 users, 6 banks, 5 zones, etc.)  
+✅ Starts development server  
+✅ Opens http://127.0.0.1:8000  
+
+**Your system is now IDENTICAL to the original!**
+
+---
+
+## 📋 **YOUR PRE-LOADED SYSTEM DATA**
+
+| Component | Quantity | Status |
+|-----------|----------|---------|
+| 👤 **Users** | 6 | ✅ Original passwords preserved |
+| 🏦 **Banks** | 6 | ✅ SWIFT codes included |
+| 📍 **Zones** | 5 | ✅ Original configuration |
+| 📋 **Schemes** | 5 | ✅ With default cost centers |
+| 💼 **Suppliers** | 5 | ✅ Bank accounts loaded |
+| 📊 **Total Records** | 167 | ✅ Everything identical |
+
+**All your original users are ready to login immediately!**
+
+---
+
+## 🔧 **MANAGEMENT COMMANDS**
+
+### **Setup & Launch:**
+| Command | Purpose | Best For |
+|---------|---------|----------|
+| **`launch.bat`** | Complete setup & start server | First-time users |
+| **`setup.bat`** | Setup only (no server start) | Separate setup & run |
+| **`start.bat`** | Start server only | After setup |
+| **`quick_setup.bat`** | Fast minimal setup | Quick testing |
+
+### **Maintenance & Backup:**
+| Command | Purpose |
+|---------|---------|
+| **`reset.bat`** | Reset everything (clean slate) |
+| **`backup.bat`** | Create data backups |
+| **`restore.bat`** | Restore from backup |
+| **`update.bat`** | Update all packages |
+
+### **Administration:**
+| Command | Purpose |
+|---------|---------|
+| **`admin.bat`** | Create new admin user |
+| **`check.bat`** | System diagnostics |
+| **`runserver.bat`** | Just run server (venv active) |
+
+---
+
+## 🌐 **ACCESS INFORMATION**
+
+After running `launch.bat`:
+- **🌐 Application**: http://127.0.0.1:8000
+- **🔧 Admin Panel**: http://127.0.0.1:8000/admin
+- **👤 Login**: Use any of your 6 original users
+- **🔑 Admin Fallback**: admin / admin123 (if no data file)
+
+**Default Port**: 8000  
+**Change Port**: `python manage.py runserver 8001`
+
+---
+
+## 🎯 **SYSTEM FEATURES**
+
+### **Role-Based Access Control:**
+| Role | Permissions | Use Case |
+|------|-------------|----------|
+| **👑 System Admin** | Full system management | User management, configuration |
+| **📊 Accounts Personnel** | Create & manage EFT batches | Payment processing, batch creation |
+| **✅ Authorizer** | Approve/reject batches | Quality control, final approval |
+
+### **Core Functionality:**
+- **Payment Processing**: Batch creation with real-time validation
+- **RBM Compliance**: Banking-compliant EFT file generation (TXT/CSV)
+- **Multi-Level Approval**: Complete audit trail for compliance
+- **Master Data Management**: Banks, suppliers, zones, schemes
+- **Real-Time Reporting**: Role-specific dashboards and analytics
+
+### **Technical Specifications:**
+- **Backend**: Django 4.2.27
 - **Frontend**: Bootstrap 5, JavaScript
 - **Database**: SQLite3 (Development)
-- **Authentication**: Django Auth with custom permission system
-- **File Formats**: TXT and CSV generation
-
-## Table of Contents
-
-1. [Installation Guide](#installation-guide)
-2. [System Features](#system-features)
-3. [User Roles and Permissions](#user-roles-and-permissions)
-4. [Usage Instructions](#usage-instructions)
-5. [Development Guide](#development-guide)
-6. [Database Schema](#database-schema)
-7. [API Documentation](#api-documentation)
-8. [Troubleshooting](#troubleshooting)
-9. [Deployment Guidelines](#deployment-guidelines)
-10. [Contributing](#contributing)
+- **Authentication**: Django Auth with custom permissions
+- **File Formats**: TXT, CSV, Excel export
 
 ---
 
-## Installation Guide
+## 📁 **PROJECT STRUCTURE**
 
-### Prerequisites
-- Python 3.9 or higher
-- pip package manager
-- Git version control
-- Modern web browser
-
-### Step 1: Clone Repository
-```bash
-git clone [repository-url]
-cd project-directory
 ```
-
-### Step 2: Set Up Virtual Environment
-```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate on Windows
-venv\Scripts\activate
-
-# Activate on macOS/Linux
-source venv/bin/activate
-```
-
-### Step 3: Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### Step 4: Configure Environment
-1. Copy environment configuration template
-2. Update settings as needed
-3. Set up database connection
-
-### Step 5: Initialize Database
-```bash
-# Apply database migrations
-python manage.py migrate
-
-# Load initial data
-python manage.py seed_data
-
-# Create admin user
-python manage.py createsuperuser
-```
-
-### Step 6: Start Development Server
-```bash
-python manage.py runserver
-```
-Access the application at: `http://127.0.0.1:8000`
-
----
-
-## System Features
-
-### Authentication & Security
-- Role-based access control system
-- Secure password hashing
-- Session management with timeout
-- Audit trail for all system activities
-
-### Master Data Management
-- **Banks**: Manage banking institutions with identification codes
-- **Suppliers**: Maintain vendor and beneficiary information
-- **Zones**: Organize operational areas
-- **Schemes**: Payment categorization and tracking
-- **Accounts**: Debit account management
-
-### Payment Processing
-- Batch-based transaction processing
-- Real-time amount calculation
-- Multi-currency support
-- Transaction validation
-
-### Approval Workflow
-- Multi-level approval system
-- Review and approval tracking
-- Audit logs for compliance
-- Notification system
-
-### File Generation
-- Compliant file format generation
-- Automatic sequence numbering
-- Format validation
-- Batch export functionality
-
-### Reporting & Analytics
-- Role-specific dashboards
-- Transaction statistics
-- Activity monitoring
-- Batch status tracking
-
----
-
-## User Roles and Permissions
-
-### System Administrator
-**Access Level**: Full system access
-**Responsibilities**:
-- User management and role assignment
-- System configuration
-- Master data maintenance
-- System monitoring and troubleshooting
-- Access to administrative functions
-
-### Accounts Personnel
-**Access Level**: Transaction processing
-**Responsibilities**:
-- Create and manage payment batches
-- Add and edit transaction details
-- Submit batches for approval
-- View transaction history
-- Generate preliminary reports
-
-### Authorizer
-**Access Level**: Approval and review
-**Responsibilities**:
-- Review pending payment batches
-- Approve or reject submissions
-- View approval history
-- Export approved files
-- Cannot modify transaction details
-
----
-
-## Usage Instructions
-
-### Creating Payment Batches
-1. Log in with Accounts Personnel credentials
-2. Navigate to "Create Batch" section
-3. Enter batch identification details
-4. Add individual transactions
-5. Review batch summary
-6. Submit for approval
-
-### Transaction Entry
-Each transaction requires:
-- Account information
-- Beneficiary details
-- Payment scheme
-- Transaction amount
-- Reference information
-- Description/narration
-
-### Approval Process
-1. Batch submitted by Accounts Personnel
-2. Appears in Authorizer's pending queue
-3. Authorizer reviews transaction details
-4. Authorizer approves or rejects with comments
-5. Status updates accordingly
-
-### File Export Process
-1. Navigate to approved batches section
-2. Select batch for export
-3. Choose file format (TXT/CSV)
-4. Download generated file
-5. File ready for banking system upload
-
----
-
-## Development Guide
-
-### Project Structure
-```
-project-root/
+CRWB-EFT-System-v1.0/
+├── 📜 launch.bat                 # Main launcher (ONE COMMAND)
+├── 📜 setup.bat                  # Setup only
+├── 📜 start.bat                  # Start server only
+├── 📜 reset.bat                  # Reset everything
+├── 📜 backup.bat                 # Create backups
+├── 📜 restore.bat                # Restore from backup
+├── 📜 update.bat                 # Update packages
+├── 📜 admin.bat                  # Create admin user
+├── 📜 check.bat                  # System diagnostics
+├── 📜 quick_setup.bat           # Fast minimal setup
+├── 📜 runserver.bat             # Just run server
 │
-├── project_name/          # Django project configuration
-│   ├── settings.py       # Application settings
-│   ├── urls.py          # URL routing
-│   └── wsgi.py          # WSGI configuration
+├── 📄 requirements.txt           # 44+ Python dependencies
+├── 📄 manage.py                  # Django management
 │
-├── app_name/             # Main application
-│   ├── models.py        # Database models
-│   ├── views.py         # Business logic
-│   ├── forms.py         # Form definitions
-│   ├── urls.py          # Application URLs
-│   ├── admin.py         # Admin interface
-│   └── templates/       # HTML templates
+├── 📁 crwb_eft/                 # Project settings
+│   ├── settings.py              # Configuration
+│   ├── urls.py                  # URL routing
+│   └── wsgi.py                  # WSGI configuration
 │
-├── templates/            # Base templates
-├── static/              # Static assets
-├── requirements.txt     # Python dependencies
-└── manage.py           # Django management script
+├── 📁 eft_app/                  # Main application
+│   ├── models.py               # Database models
+│   ├── views.py                # Business logic
+│   ├── forms.py                # Form definitions
+│   ├── admin.py                # Admin interface
+│   ├── fixtures/               # YOUR DATA
+│   │   └── all_data.json      # Complete original system
+│   └── templates/              # HTML templates
+│
+├── 📁 templates/                # Base templates
+├── 📁 static/                  # CSS, JS, images
+└── 📁 media/                   # Uploaded files
 ```
 
-### Setting Up Development Environment
+---
+
+## 🛠️ **DEVELOPER WORKFLOW**
+
+### **For Contributors:**
 ```bash
-# Clone repository
-git clone [repository-url]
+# 1. Create feature branch
+git checkout -b feature/description
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate
+# 2. Test with your changes
+launch.bat
 
-# Install development dependencies
-pip install -r requirements-dev.txt
+# 3. Export updated data (if changed)
+python manage.py dumpdata --indent 2 > eft_app/fixtures/all_data.json
 
-# Set up pre-commit hooks
-pre-commit install
+# 4. Commit and push
+git add .
+git commit -m "Feature: description"
+git push origin feature/description
 ```
 
-### Running Tests
+### **Database Operations:**
 ```bash
-# Run complete test suite
-python manage.py test
+# Export current system state
+backup.bat
 
-# Run specific application tests
-python manage.py test app_name
-
-# Run tests with coverage
-coverage run manage.py test
-coverage report
-```
-
-### Code Standards
-- Follow Django coding style guidelines
-- Use meaningful variable and function names
-- Add comments for complex business logic
-- Maintain consistent indentation (4 spaces)
-- Update documentation with code changes
-
-### Database Migrations
-```bash
-# Create new migrations
+# Create data migration
 python manage.py makemigrations
 
 # Apply migrations
 python manage.py migrate
 
-# Check migration status
-python manage.py showmigrations
-
-# Create data migrations
-python manage.py makemigrations --empty app_name
-```
-
-### Git Workflow
-```bash
-# Create feature branch
-git checkout -b feature/feature-description
-
-# Stage changes
-git add .
-
-# Commit with descriptive message
-git commit -m "Description of changes made"
-
-# Push to remote repository
-git push origin feature/feature-description
-
-# Create pull request for code review
+# Load specific data
+python manage.py loaddata eft_app/fixtures/specific_data.json
 ```
 
 ---
 
-## Database Schema
+## 🔍 **TROUBLESHOOTING**
 
-### Core Models
+### **Common Issues & Solutions:**
 
-#### Batch Model
-- **Purpose**: Stores payment batch information
-- **Fields**: Batch identifier, creation date, status, totals
-- **Relationships**: Links to transactions and users
+#### **1. Python Not Found:**
+```cmd
+# Check installation
+python --version
+# Should show Python 3.9+
 
-#### Transaction Model
-- **Purpose**: Individual payment records
-- **Fields**: Amount, reference, narration, sequence
-- **Relationships**: Links to batches, suppliers, accounts
-
-#### Supplier Model
-- **Purpose**: Vendor and beneficiary information
-- **Fields**: Supplier code, name, bank details
-- **Relationships**: Links to transactions and banks
-
-#### User Management
-- **Purpose**: System user accounts and permissions
-- **Fields**: Username, email, role assignments
-- **Relationships**: Links to created batches and approvals
-
-### Database Operations
-```bash
-# Backup database
-python manage.py dumpdata > backup.json
-
-# Restore from backup
-python manage.py loaddata backup.json
-
-# Database shell access
-python manage.py dbshell
-
-# Reset database (development only)
-python manage.py flush
+# If not installed:
+# Download from: https://python.org
+# Check "Add Python to PATH" during installation
 ```
 
----
-
-## API Documentation
-
-### Available Endpoints
-
-#### Supplier Information
-```
-GET /api/supplier/{id}/details/
-```
-**Response Format:**
-```json
-{
-    "bank_name": "Bank Name",
-    "bank_code": "BANKCODE",
-    "account_number": "1234567890",
-    "account_name": "Account Holder Name"
-}
-```
-
-#### Scheme Details
-```
-GET /api/scheme/{id}/details/
-```
-**Response Format:**
-```json
-{
-    "scheme_code": "SCHEME001",
-    "scheme_name": "Scheme Description",
-    "zone_code": "ZONE01"
-}
-```
-
-### Authentication
-All API endpoints require user authentication. The system uses session-based authentication.
-
-### Error Responses
-Common HTTP status codes:
-- `200`: Successful request
-- `400`: Bad request
-- `401`: Unauthorized access
-- `404`: Resource not found
-- `500`: Internal server error
-
----
-
-## Troubleshooting
-
-### Common Issues and Solutions
-
-#### Database Connection Problems
-**Symptoms**: Migration errors, database access failures
-**Solutions**:
-- Verify database file permissions
-- Check database path in settings
-- Ensure sufficient disk space
-- Run database integrity checks
-
-#### Static File Issues
-**Symptoms**: Missing CSS/JS, broken page styling
-**Solutions**:
-```bash
-# Collect static files
-python manage.py collectstatic
-
-# Check static file configuration
-# Verify file permissions
-# Clear browser cache
-```
-
-#### Permission Errors
-**Symptoms**: Access denied, unauthorized actions
-**Solutions**:
-- Verify user role assignments
-- Check group permissions
-- Review access control settings
-- Clear user sessions if needed
-
-#### Server Configuration
-**Symptoms**: Port conflicts, server won't start
-**Solutions**:
-```bash
-# Check port availability
+#### **2. Port 8000 Already in Use:**
+```cmd
+# Method 1: Kill process
 netstat -ano | findstr :8000
+taskkill /PID [PID] /F
 
-# Use alternative port
-python manage.py runserver 8001
-
-# Check firewall settings
-# Verify Python installation
+# Method 2: Use different port
+start.bat 8001
 ```
 
-### Logging and Debugging
-- Enable debug mode in development
-- Check Django server logs
-- Review application logs
-- Use Django debug toolbar
-- Monitor system performance
+#### **3. Virtual Environment Issues:**
+```cmd
+# Delete and recreate
+reset.bat
+launch.bat
+```
 
-### Performance Optimization
-- Implement database indexing
-- Use query optimization
-- Cache frequently accessed data
-- Optimize static file delivery
-- Monitor memory usage
+#### **4. Database Corruption:**
+```cmd
+# 1. Create backup
+backup.bat
 
----
+# 2. Reset database
+reset.bat
 
-## Deployment Guidelines
+# 3. Restore from backup
+restore.bat
+```
 
-### Production Checklist
+#### **5. Package Installation Failures:**
+```cmd
+# Try minimal setup
+quick_setup.bat
+```
 
-#### Environment Configuration
-- Set `DEBUG = False`
-- Configure `ALLOWED_HOSTS`
-- Set up production database
-- Configure static and media files
-- Set up email services
+### **Diagnostic Tools:**
+```cmd
+# Run system check
+check.bat
 
-#### Security Settings
-- Generate strong `SECRET_KEY`
-- Enable HTTPS/SSL
-- Configure security middleware
-- Set up proper file permissions
-- Implement rate limiting
+# Check Django installation
+python manage.py check
 
-#### Database Setup
-- Use production database (PostgreSQL/MySQL)
-- Configure database backups
-- Set up replication if needed
-- Implement connection pooling
-
-#### Web Server Configuration
-- Use production WSGI server (Gunicorn/uWSGI)
-- Configure reverse proxy (Nginx/Apache)
-- Set up SSL certificates
-- Configure load balancing if needed
-
-### Deployment Steps
-1. **Prepare Environment**
-   ```bash
-   # Clone repository
-   git clone [repository-url]
-   
-   # Set up virtual environment
-   python -m venv venv
-   source venv/bin/activate
-   
-   # Install dependencies
-   pip install -r requirements.txt
-   ```
-
-2. **Configure Settings**
-   ```bash
-   # Copy environment template
-   cp .env.example .env
-   
-   # Edit production settings
-   nano .env
-   ```
-
-3. **Initialize Database**
-   ```bash
-   # Run migrations
-   python manage.py migrate
-   
-   # Collect static files
-   python manage.py collectstatic --noinput
-   
-   # Create admin user
-   python manage.py createsuperuser
-   ```
-
-4. **Set Up Web Server**
-   ```bash
-   # Configure Gunicorn
-   gunicorn project_name.wsgi:application --bind 0.0.0.0:8000
-   
-   # Configure Nginx
-   # Set up SSL certificates
-   # Configure domain names
-   ```
-
-### Monitoring and Maintenance
-- Set up error monitoring
-- Configure log rotation
-- Schedule regular backups
-- Monitor system performance
-- Update dependencies regularly
-- Security patch management
-
-### Backup Strategy
-- Daily database backups
-- Weekly full system backups
-- Off-site backup storage
-- Regular backup testing
-- Disaster recovery planning
+# Verify database
+python manage.py dbshell
+```
 
 ---
 
-## Contributing
+## 📊 **SYSTEM REQUIREMENTS**
 
-### Development Process
-1. **Fork Repository**: Create personal fork
-2. **Create Branch**: Feature or bugfix branch
-3. **Make Changes**: Implement features/fixes
-4. **Add Tests**: Include test coverage
-5. **Submit PR**: Pull request with description
+### **Minimum:**
+- **OS**: Windows 10/11, macOS 10.15+, Ubuntu 18.04+
+- **Python**: 3.9 or higher
+- **RAM**: 4GB minimum
+- **Storage**: 500MB free space
+- **Browser**: Chrome 90+, Firefox 88+, Edge 90+
 
-### Code Review Guidelines
-- Follow existing code patterns
-- Include appropriate tests
-- Update documentation
-- Address security considerations
-- Consider performance impacts
-
-### Testing Requirements
-- Unit tests for new functionality
-- Integration tests for workflows
-- Security testing for new features
-- Performance testing for changes
-
-### Documentation Updates
-- Update README for new features
-- Add API documentation
-- Update deployment guides
-- Include usage examples
-
-### Issue Reporting
-- Use clear, descriptive titles
-- Include steps to reproduce
-- Add relevant logs/screenshots
-- Specify environment details
-- Suggest possible solutions
+### **Recommended:**
+- **OS**: Windows 11, macOS 12+, Ubuntu 20.04+
+- **Python**: 3.11 or higher
+- **RAM**: 8GB or more
+- **Storage**: 1GB free space
+- **Browser**: Latest Chrome/Firefox/Edge
 
 ---
 
-## Support and Maintenance
+## 🔒 **SECURITY FEATURES**
 
-### Getting Help
-- Check documentation first
-- Review troubleshooting section
-- Search existing issues
-- Contact development team
+### **Authentication:**
+- Role-based access control (RBAC)
+- Secure password hashing (PBKDF2)
+- Session management with timeout
+- Login attempt limiting
 
-### Regular Maintenance Tasks
-- Security updates
-- Dependency updates
-- Database optimization
-- Log file management
-- Backup verification
+### **Data Protection:**
+- SQL injection prevention
+- XSS protection
+- CSRF tokens
+- Secure headers
+- Audit logging
 
-### Update Procedures
-- Test updates in staging
-- Schedule maintenance windows
-- Communicate changes to users
-- Monitor after updates
-- Have rollback plan ready
-
-### Performance Monitoring
-- Regular system health checks
-- Monitor response times
-- Track resource usage
-- User feedback collection
-- Error rate monitoring
+### **Compliance:**
+- Audit trail for all actions
+- User activity logging
+- Data validation at all levels
+- File integrity checks
 
 ---
 
-## License and Copyright
+## 📈 **DEPLOYMENT**
 
-### Usage Rights
-This software is proprietary and protected by copyright. All rights reserved.
+### **Development (Default):**
+```cmd
+# Already configured for development
+launch.bat
+```
 
-### Restrictions
-- No redistribution without permission
-- No modification of source code
-- No reverse engineering
-- Commercial use requires license agreement
+### **Production Checklist:**
+1. Set `DEBUG = False` in `crwb_eft/settings.py`
+2. Configure `ALLOWED_HOSTS`
+3. Use PostgreSQL/MySQL instead of SQLite
+4. Set up proper static file serving
+5. Configure HTTPS/SSL
+6. Set up regular backups with `backup.bat`
 
-### Compliance Requirements
-- Follow organizational policies
+### **Backup Strategy:**
+```cmd
+# Daily automated backup (add to Task Scheduler)
+backup.bat
+
+# Weekly full export
+python manage.py dumpdata --indent 2 > weekly_backup_$(date +%Y%m%d).json
+```
+
+---
+
+## 📝 **API DOCUMENTATION**
+
+### **Available Endpoints:**
+```
+GET    /api/supplier/{id}/details/    # Supplier information
+GET    /api/scheme/{id}/details/      # Scheme details with cost center
+GET    /api/scheme/{id}/zone/         # Zone information
+```
+
+### **Authentication:**
+All API endpoints require session authentication. Use the same login as the web interface.
+
+### **Response Format:**
+```json
+{
+    "success": true,
+    "data": {
+        "field": "value"
+    }
+}
+```
+
+---
+
+## 🔄 **MAINTENANCE SCHEDULE**
+
+### **Daily:**
+- Run `check.bat` for system health
+- Verify backups with `backup.bat`
+- Check server logs
+
+### **Weekly:**
+- Run `update.bat` for package updates
+- Review audit logs
+- Test backup restoration
+
+### **Monthly:**
+- Security review
+- Performance optimization
+- Database cleanup
+
+---
+
+## 🆘 **SUPPORT & HELP**
+
+### **Quick Help:**
+1. **First**: Run `check.bat` for diagnostics
+2. **Second**: Check troubleshooting section above
+3. **Third**: Create issue on GitHub
+
+### **Common Solutions:**
+```cmd
+# Most issues can be fixed with:
+reset.bat
+launch.bat
+```
+
+### **Getting Help:**
+- **GitHub Issues**: https://github.com/wonderrful003/CRWB-EFT-System-v1.0/issues
+- **Documentation**: This README file
+- **System Logs**: Check server output in terminal
+
+---
+
+## 📄 **LICENSE & USAGE**
+
+### **Copyright Notice:**
+© 2025 CRWB EFT System. All rights reserved.
+
+### **Usage Rights:**
+- **Internal Use**: Approved for CRWB operations
+- **Modification**: Not permitted without authorization
+- **Distribution**: Restricted to authorized personnel only
+- **Commercial Use**: Requires written agreement
+
+### **Compliance Requirements:**
 - Maintain audit trails
-- Protect sensitive data
 - Regular security assessments
+- Data protection compliance
+- User access logging
 
 ---
 
-## Acknowledgments
+## 🙏 **ACKNOWLEDGMENTS**
 
-- Django framework and community
-- Bootstrap development team
-- All contributors and testers
-- Banking system compliance teams
+- **Django Framework** and community
+- **Bootstrap Team** for frontend components
+- **Python Community** for excellent tools
+- **RBM Compliance Teams** for banking standards
+- **All Contributors** and testers
 
 ---
 
-**Documentation Version**: 1.0  
-**Last Updated**: 19/01/2026 
-**System Version**: CRWB EFT System v1.0  
+## 📞 **CONTACT INFORMATION**
 
-For additional support or to report issues, please contact the development team or refer to the internal support channels.
+### **Development Team:**
+- **Repository**: https://github.com/wonderrful003/CRWB-EFT-System-v1.0
+- **Issues**: GitHub Issues tab
+- **Support**: Internal IT department
+
+### **System Information:**
+- **Version**: CRWB EFT System v1.0
+- **Last Updated**: January 2025
+- **Data Version**: Includes complete original system data
+- **Status**: Production Ready
+
+---
+
+## 🎉 **READY TO START?**
+
+```cmd
+# Three simple commands:
+git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
+cd CRWB-EFT-System-v1.0
+launch.bat
+```
+
+**Your complete EFT payment system is ready in minutes, with all your original data preserved!**
