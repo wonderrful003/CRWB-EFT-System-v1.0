@@ -36,6 +36,45 @@ chmod +x setup.sh start.sh
 
 ---
 
+## ⚠️ **IMPORTANT PREREQUISITE: PYTHON 3.9.0**
+
+**This system requires Python 3.9.0 specifically for compatibility.**
+
+### **Check Your Python Version:**
+```cmd
+python --version
+# Should output: Python 3.9.0
+```
+
+### **If Python 3.9.0 is NOT installed:**
+
+#### **Windows:**
+1. Download Python 3.9.0 from: https://www.python.org/downloads/release/python-390/
+2. Run installer
+3. **CRITICAL**: Check "Add Python 3.9 to PATH"
+4. Complete installation
+5. Restart Command Prompt
+
+#### **Mac:**
+```bash
+# Using Homebrew
+brew install python@3.9
+
+# Or download from: https://www.python.org/downloads/release/python-390/
+```
+
+#### **Linux:**
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install python3.9 python3.9-venv python3.9-dev
+
+# Set as default (optional)
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
+```
+
+---
+
 ## 📋 **WHAT GETS INSTALLED AUTOMATICALLY**
 
 | Component | Quantity | Status |
@@ -51,43 +90,52 @@ chmod +x setup.sh start.sh
 
 ---
 
-## 🔧 **MANUAL SETUP (Step-by-Step)**
+## 🔧 **MANUAL SETUP FOR PYTHON 3.9.0 (Step-by-Step)**
 
-### **If the automated scripts don't work, follow these manual steps:**
+### **Step 1: Verify Python 3.9.0**
+```cmd
+python --version
+# MUST show: Python 3.9.0
 
-### **Step 1: Clone Repository**
+# If shows a different version:
+# Windows: Check PATH or use python3.9 command
+# Mac/Linux: Use python3.9 or python3.9 command
+```
+
+### **Step 2: Clone Repository**
 ```cmd
 git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
 cd CRWB-EFT-System-v1.0
 ```
 
-### **Step 2: Create Virtual Environment**
+### **Step 3: Create Virtual Environment with Python 3.9.0**
 ```cmd
-# Windows
+# Windows (using Python 3.9.0 specifically)
 python -m venv venv
 venv\Scripts\activate
 
-# Mac/Linux
-python3 -m venv venv
+# Mac/Linux (using Python 3.9.0 specifically)
+python3.9 -m venv venv
 source venv/bin/activate
 ```
 
-### **Step 3: Install Requirements**
+### **Step 4: Install Requirements for Python 3.9.0**
 ```cmd
+# This will install packages compatible with Python 3.9.0
 pip install -r requirements.txt
 
-# If requirements.txt fails, install Django only:
+# If requirements.txt fails, install Django 4.2.27 (Python 3.9 compatible):
 pip install Django==4.2.27
 ```
 
-### **Step 4: Setup Database**
+### **Step 5: Setup Database**
 ```cmd
 # Run migrations
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### **Step 5: Load Your Data**
+### **Step 6: Load Your Data**
 ```cmd
 # Load your complete original system
 python manage.py loaddata eft_app/fixtures/all_data.json
@@ -95,118 +143,131 @@ python manage.py loaddata eft_app/fixtures/all_data.json
 # Verify data was loaded
 python manage.py shell -c "
 from django.contrib.auth.models import User
-print(f'Loaded {User.objects.count()} users from your system')
+print(f'✅ Loaded {User.objects.count()} users from your system')
 "
 ```
 
-### **Step 6: Create Admin User (Optional)**
+### **Step 7: Create Admin User (Optional)**
 ```cmd
 # Only needed if data file is missing
 python manage.py createsuperuser
 # Follow prompts: admin, admin@crwb.gov.mw, admin123
 ```
 
-### **Step 7: Start Server**
+### **Step 8: Start Server**
 ```cmd
 python manage.py runserver
 ```
 
-### **Step 8: Access System**
+### **Step 9: Access System**
 - **🌐 Application**: http://127.0.0.1:8000
 - **🔧 Admin Panel**: http://127.0.0.1:8000/admin
 - **👤 Login**: Use your original users or admin/admin123
 
 ---
 
-## 📁 **AUTOMATED SCRIPTS (Windows)**
+## 🛠️ **PYTHON 3.9.0 SPECIFIC TROUBLESHOOTING**
 
-### **Setup & Launch Commands:**
+### **Common Python 3.9.0 Issues:**
 
-| Command | Purpose | Best For |
-|---------|---------|----------|
-| **`launch.bat`** | Complete setup & start server | First-time users |
-| **`setup.bat`** | Setup only (no server start) | Separate setup & run |
-| **`start.bat`** | Start server only | After setup |
-| **`quick_setup.bat`** | Fast minimal setup | Quick testing |
+#### **1. "Python not found" or wrong version:**
+```cmd
+# Check all Python installations
+where python
 
-### **Maintenance Commands:**
+# If Python 3.9.0 is installed but not default:
+# Windows: Use full path: C:\Python39\python.exe
+# Mac/Linux: Use python3.9 command
 
-| Command | Purpose |
-|---------|---------|
-| **`reset.bat`** | Reset everything (clean slate) |
-| **`backup.bat`** | Create data backups |
-| **`restore.bat`** | Restore from backup |
-| **`update.bat`** | Update all packages |
+# Set Python 3.9.0 as default temporarily:
+# Windows:
+set PATH=C:\Python39;%PATH%
 
-### **Administration Commands:**
+# Mac/Linux:
+alias python=python3.9
+```
 
-| Command | Purpose |
-|---------|---------|
-| **`admin.bat`** | Create new admin user |
-| **`check.bat`** | System diagnostics |
-| **`runserver.bat`** | Just run server |
+#### **2. "pip not found" with Python 3.9.0:**
+```cmd
+# Ensure pip is installed for Python 3.9.0
+python -m ensurepip --upgrade
+
+# Or download get-pip.py
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+```
+
+#### **3. Package installation fails with Python 3.9.0:**
+```cmd
+# Try installing with --no-deps
+pip install -r requirements.txt --no-deps
+
+# Then install missing dependencies manually
+pip install Django==4.2.27
+pip install pillow==9.5.0  # Python 3.9 compatible version
+```
+
+#### **4. Virtual environment creation fails:**
+```cmd
+# Ensure Python 3.9.0 is being used
+python --version
+
+# If using Python 3.9 but command shows different:
+# Windows: python -3.9 -m venv venv
+# Mac/Linux: python3.9 -m venv venv
+```
 
 ---
 
-## 🛠️ **TROUBLESHOOTING**
+## 📊 **SYSTEM REQUIREMENTS - PYTHON 3.9.0 SPECIFIC**
 
-### **Common Installation Issues:**
+### **Mandatory Requirements:**
+- **✅ Python Version**: **3.9.0** (NOT 3.10, NOT 3.11, NOT 3.12, NOT 3.13)
+- **Operating System**: Windows 10/11, macOS 10.15+, Ubuntu 18.04+
+- **Memory**: 4GB RAM
+- **Storage**: 500MB free space
 
-#### **1. "Python not found" Error:**
-```cmd
-# Check Python installation
-python --version
+### **Recommended Setup:**
+- **Python**: 3.9.0 (exactly)
+- **OS**: Windows 11, macOS 12+, Ubuntu 20.04+
+- **Memory**: 8GB RAM or more
+- **Storage**: 1GB free space
 
-# If not installed:
-# 1. Download from https://python.org
-# 2. During installation, CHECK "Add Python to PATH"
-# 3. Restart Command Prompt and try again
-```
+### **Why Python 3.9.0?**
+- ✅ Tested and verified with Django 4.2.27
+- ✅ Compatible with all 44+ packages in requirements.txt
+- ✅ Stable and reliable for production
+- ✅ Avoids Python 3.10+ breaking changes
 
-#### **2. "pip install" Fails:**
-```cmd
-# Try upgrading pip first
-python -m pip install --upgrade pip
+---
 
-# Install Django only
-pip install Django==4.2.27
+## 📁 **AUTOMATED SCRIPTS (Windows) - Python 3.9.0 Compatible**
 
-# Or install from requirements without dependencies
-pip install -r requirements.txt --no-deps
-```
+### **Setup & Launch Commands:**
 
-#### **3. Database Errors:**
-```cmd
-# Delete corrupted database
-del db.sqlite3
+| Command | Purpose | Python 3.9.0 Compatible |
+|---------|---------|-------------------------|
+| **`launch.bat`** | Complete setup & start server | ✅ Yes |
+| **`setup.bat`** | Setup only (no server start) | ✅ Yes |
+| **`start.bat`** | Start server only | ✅ Yes |
+| **`quick_setup.bat`** | Fast minimal setup | ✅ Yes |
 
-# Recreate migrations
-python manage.py makemigrations
-python manage.py migrate
+### **Maintenance Commands:**
 
-# Reload data
-python manage.py loaddata eft_app/fixtures/all_data.json
-```
+| Command | Purpose | Python 3.9.0 Compatible |
+|---------|---------|-------------------------|
+| **`reset.bat`** | Reset everything | ✅ Yes |
+| **`backup.bat`** | Create data backups | ✅ Yes |
+| **`restore.bat`** | Restore from backup | ✅ Yes |
+| **`update.bat`** | Update packages | ✅ Yes |
 
-#### **4. Port 8000 Already in Use:**
-```cmd
-# Find what's using port 8000
-netstat -ano | findstr :8000
+### **Administration Commands:**
 
-# Kill the process (replace PID with actual number)
-taskkill /PID [PID] /F
-
-# Or use different port
-python manage.py runserver 8001
-```
-
-#### **5. Virtual Environment Issues:**
-```cmd
-# Delete and recreate
-rmdir /s /q venv
-python -m venv venv
-venv\Scripts\activate
-```
+| Command | Purpose | Python 3.9.0 Compatible |
+|---------|---------|-------------------------|
+| **`admin.bat`** | Create new admin user | ✅ Yes |
+| **`check.bat`** | System diagnostics | ✅ Yes |
+| **`runserver.bat`** | Just run server | ✅ Yes |
 
 ---
 
@@ -231,30 +292,38 @@ venv\Scripts\activate
 
 ---
 
-## 🔄 **DEVELOPER WORKFLOW**
+## 🔄 **DEVELOPER WORKFLOW WITH PYTHON 3.9.0**
 
 ### **For Code Contributors:**
 
 ```bash
-# 1. Fork repository
-# 2. Clone your fork
+# 1. Install Python 3.9.0 first
+# 2. Fork repository
+# 3. Clone your fork
 git clone https://github.com/YOUR-USERNAME/CRWB-EFT-System-v1.0.git
 
-# 3. Create feature branch
+# 4. Create virtual environment with Python 3.9.0
+python3.9 -m venv venv
+source venv/bin/activate
+
+# 5. Install requirements
+pip install -r requirements.txt
+
+# 6. Create feature branch
 git checkout -b feature/new-feature
 
-# 4. Make changes and test
-launch.bat
+# 7. Make changes and test
+python manage.py runserver
 
-# 5. Export updated data (if database changed)
+# 8. Export updated data (if database changed)
 python manage.py dumpdata --indent 2 > eft_app/fixtures/all_data.json
 
-# 6. Commit and push
+# 9. Commit and push
 git add .
 git commit -m "Add: new feature description"
 git push origin feature/new-feature
 
-# 7. Create Pull Request on GitHub
+# 10. Create Pull Request on GitHub
 ```
 
 ### **Database Management:**
@@ -275,29 +344,6 @@ python manage.py migrate
 # Reset database (WARNING: deletes all data)
 python manage.py flush
 ```
-
----
-
-## 📊 **SYSTEM REQUIREMENTS**
-
-### **Minimum Requirements:**
-- **Operating System**: Windows 10/11, macOS 10.15+, Ubuntu 18.04+
-- **Python Version**: 3.9 or higher
-- **Memory**: 4GB RAM
-- **Storage**: 500MB free space
-- **Browser**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
-
-### **Recommended Specifications:**
-- **Operating System**: Windows 11, macOS 12+, Ubuntu 20.04+
-- **Python Version**: 3.11 or higher
-- **Memory**: 8GB RAM or more
-- **Storage**: 1GB free space
-- **Browser**: Latest version of Chrome/Firefox
-
-### **Network Requirements:**
-- Localhost access (for development)
-- Port 8000 open (or alternative port)
-- No external dependencies required
 
 ---
 
@@ -377,8 +423,8 @@ launch.bat
 git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
 cd CRWB-EFT-System-v1.0
 
-# Create production environment
-python -m venv venv_prod
+# Create production environment with Python 3.9.0
+python3.9 -m venv venv_prod
 source venv_prod/bin/activate  # or venv_prod\Scripts\activate
 ```
 
@@ -487,11 +533,11 @@ check.bat
 python manage.py check
 ```
 
-#### **2. Common Solutions:**
+#### **2. Common Python 3.9.0 Solutions:**
 - **Can't login**: Use `admin.bat` to create new admin
-- **Server won't start**: Run `reset.bat` then `launch.bat`
+- **Server won't start**: Verify Python 3.9.0 is installed correctly
 - **Data missing**: Run `restore.bat` with backup file
-- **Slow performance**: See Performance Optimization section
+- **Package errors**: Check Python version is exactly 3.9.0
 
 #### **3. Contact Support:**
 - **GitHub Issues**: https://github.com/wonderrful003/CRWB-EFT-System-v1.0/issues
@@ -582,17 +628,22 @@ restore.bat
 
 ## 🎉 **READY TO BEGIN?**
 
-### **Option 1: Automated Setup (Recommended)**
+### **First: Install Python 3.9.0**
+Download from: https://www.python.org/downloads/release/python-390/
+
+### **Then choose your setup method:**
+
+#### **Option 1: Automated Setup (Recommended)**
 ```cmd
 git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
 cd CRWB-EFT-System-v1.0
 launch.bat
 ```
 
-### **Option 2: Manual Setup**
+#### **Option 2: Manual Setup**
 Follow the **Manual Setup** section above for step-by-step instructions.
 
-### **Option 3: Quick Test**
+#### **Option 3: Quick Test**
 ```cmd
 git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
 cd CRWB-EFT-System-v1.0
@@ -604,6 +655,7 @@ quick_setup.bat
 ---
 
 **System Version**: v1.0  
+**Python Requirement**: 3.9.0 (exactly)  
 **Last Updated**: January 2025  
 **GitHub**: https://github.com/wonderrful003/CRWB-EFT-System-v1.0  
 **Support**: Check troubleshooting section or create GitHub issue

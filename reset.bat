@@ -9,6 +9,14 @@ echo ================================================
 echo ⚠ WARNING: This will delete ALL data!
 echo ================================================
 echo.
+echo Checking Python 3.9.0...
+python --version | findstr /C:"Python 3.9.0" >nul
+if errorlevel 1 (
+    echo ❌ Python 3.9.0 required for reset!
+    pause
+    exit /b 1
+)
+
 echo What will be deleted:
 echo • Virtual environment (venv/)
 echo • Database (db.sqlite3)
@@ -53,7 +61,9 @@ echo ================================================
 echo ✅ RESET COMPLETE
 echo ================================================
 echo.
-echo To setup fresh, run: launch.bat
+echo To setup fresh (requires Python 3.9.0):
+echo 1. Run: launch.bat
+echo 2. Or: setup.bat then start.bat
 echo.
 goto end
 

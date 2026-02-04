@@ -1,52 +1,61 @@
 @echo off
-echo ========================================
-echo CRWB EFT System - Setup Only
-echo ========================================
+chcp 65001 >nul
+title CRWB EFT - Setup (Python 3.9.0 Required)
+color 0B
+
+echo ================================================
+echo       CRWB EFT SYSTEM - SETUP
+echo       REQUIRES PYTHON 3.9.0
+echo ================================================
 echo.
 
-echo This will set up the project but NOT run the server.
-echo After setup, you'll need to manually run the server.
+echo This script sets up the project but NOT start the server.
+echo Run 'start.bat' after this to start the server.
 echo.
-choice /c YN /m "Continue with setup? (Y/N)"
-if errorlevel 2 goto :eof
+echo 🔍 Verifying Python 3.9.0...
+python --version | findstr /C:"Python 3.9.0" >nul
+if errorlevel 1 (
+    echo ❌ Python 3.9.0 not found!
+    echo Download from: https://www.python.org/downloads/release/python-390/
+    pause
+    exit /b 1
+)
 
+echo ✅ Python 3.9.0 confirmed
 echo.
-echo 📁 Current directory: %CD%
-echo.
+pause
 
-echo 1. Creating virtual environment...
+echo 📦 Creating virtual environment...
 if exist venv rmdir /s /q venv 2>nul
 python -m venv venv
 call venv\Scripts\activate.bat
 
-echo 2. Installing requirements...
+echo 📥 Installing requirements for Python 3.9.0...
 pip install -r requirements.txt
 
-echo 3. Setting up database...
+echo 💾 Setting up database...
 if exist db.sqlite3 del db.sqlite3
 python manage.py makemigrations
 python manage.py migrate
 
-echo 4. Loading your data...
+echo 📂 Loading your data...
 if exist eft_app\fixtures\all_data.json (
     python manage.py loaddata eft_app\fixtures\all_data.json
-    echo ✅ Your original data loaded!
+    echo ✅ Your data loaded!
 ) else (
-    echo ⚠ No data file. Creating admin...
+    echo Creating admin user...
     python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin123')"
+    echo ✅ Created admin/admin123
 )
 
 echo.
-echo ========================================
-echo ✅ SETUP COMPLETE!
-echo ========================================
+echo ================================================
+echo ✅ SETUP COMPLETE
+echo ================================================
 echo.
-echo Virtual environment is ACTIVE.
-echo.
-echo To start server:
-echo   python manage.py runserver
-echo.
-echo To deactivate later:
-echo   deactivate
+echo Next steps:
+echo 1. To start server: start.bat
+echo 2. Open: http://127.0.0.1:8000
+echo 3. Login with your original users
 echo.
 pause
