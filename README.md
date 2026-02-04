@@ -6,31 +6,37 @@
 
 ---
 
-## 🚀 **GET STARTED IN 60 SECONDS**
+## 🚀 **QUICK START (Recommended)**
 
-### **Windows Users (Recommended):**
+### **For Windows Users:**
 ```cmd
 # 1. Clone the repository
 git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
 cd CRWB-EFT-System-v1.0
 
-# 2. Run ONE command (does everything)
+# 2. Run ONE command (does everything automatically)
 launch.bat
 ```
 
-### **What Happens Automatically:**
-✅ Creates virtual environment  
-✅ Installs 44+ dependencies  
-✅ Sets up database  
-✅ Loads **YOUR original data** (6 users, 6 banks, 5 zones, etc.)  
-✅ Starts development server  
-✅ Opens http://127.0.0.1:8000  
+### **For Mac/Linux Users:**
+```bash
+# 1. Clone the repository
+git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
+cd CRWB-EFT-System-v1.0
 
-**Your system is now IDENTICAL to the original!**
+# 2. Make scripts executable
+chmod +x setup.sh start.sh
+
+# 3. Run setup
+./setup.sh
+
+# 4. Start server
+./start.sh
+```
 
 ---
 
-## 📋 **YOUR PRE-LOADED SYSTEM DATA**
+## 📋 **WHAT GETS INSTALLED AUTOMATICALLY**
 
 | Component | Quantity | Status |
 |-----------|----------|---------|
@@ -41,13 +47,81 @@ launch.bat
 | 💼 **Suppliers** | 5 | ✅ Bank accounts loaded |
 | 📊 **Total Records** | 167 | ✅ Everything identical |
 
-**All your original users are ready to login immediately!**
+**Your complete original system is preserved and ready to use!**
 
 ---
 
-## 🔧 **MANAGEMENT COMMANDS**
+## 🔧 **MANUAL SETUP (Step-by-Step)**
 
-### **Setup & Launch:**
+### **If the automated scripts don't work, follow these manual steps:**
+
+### **Step 1: Clone Repository**
+```cmd
+git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
+cd CRWB-EFT-System-v1.0
+```
+
+### **Step 2: Create Virtual Environment**
+```cmd
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Mac/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### **Step 3: Install Requirements**
+```cmd
+pip install -r requirements.txt
+
+# If requirements.txt fails, install Django only:
+pip install Django==4.2.27
+```
+
+### **Step 4: Setup Database**
+```cmd
+# Run migrations
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### **Step 5: Load Your Data**
+```cmd
+# Load your complete original system
+python manage.py loaddata eft_app/fixtures/all_data.json
+
+# Verify data was loaded
+python manage.py shell -c "
+from django.contrib.auth.models import User
+print(f'Loaded {User.objects.count()} users from your system')
+"
+```
+
+### **Step 6: Create Admin User (Optional)**
+```cmd
+# Only needed if data file is missing
+python manage.py createsuperuser
+# Follow prompts: admin, admin@crwb.gov.mw, admin123
+```
+
+### **Step 7: Start Server**
+```cmd
+python manage.py runserver
+```
+
+### **Step 8: Access System**
+- **🌐 Application**: http://127.0.0.1:8000
+- **🔧 Admin Panel**: http://127.0.0.1:8000/admin
+- **👤 Login**: Use your original users or admin/admin123
+
+---
+
+## 📁 **AUTOMATED SCRIPTS (Windows)**
+
+### **Setup & Launch Commands:**
+
 | Command | Purpose | Best For |
 |---------|---------|----------|
 | **`launch.bat`** | Complete setup & start server | First-time users |
@@ -55,7 +129,8 @@ launch.bat
 | **`start.bat`** | Start server only | After setup |
 | **`quick_setup.bat`** | Fast minimal setup | Quick testing |
 
-### **Maintenance & Backup:**
+### **Maintenance Commands:**
+
 | Command | Purpose |
 |---------|---------|
 | **`reset.bat`** | Reset everything (clean slate) |
@@ -63,376 +138,472 @@ launch.bat
 | **`restore.bat`** | Restore from backup |
 | **`update.bat`** | Update all packages |
 
-### **Administration:**
+### **Administration Commands:**
+
 | Command | Purpose |
 |---------|---------|
 | **`admin.bat`** | Create new admin user |
 | **`check.bat`** | System diagnostics |
-| **`runserver.bat`** | Just run server (venv active) |
+| **`runserver.bat`** | Just run server |
 
 ---
 
-## 🌐 **ACCESS INFORMATION**
+## 🛠️ **TROUBLESHOOTING**
 
-After running `launch.bat`:
-- **🌐 Application**: http://127.0.0.1:8000
-- **🔧 Admin Panel**: http://127.0.0.1:8000/admin
-- **👤 Login**: Use any of your 6 original users
-- **🔑 Admin Fallback**: admin / admin123 (if no data file)
+### **Common Installation Issues:**
 
-**Default Port**: 8000  
-**Change Port**: `python manage.py runserver 8001`
-
----
-
-## 🎯 **SYSTEM FEATURES**
-
-### **Role-Based Access Control:**
-| Role | Permissions | Use Case |
-|------|-------------|----------|
-| **👑 System Admin** | Full system management | User management, configuration |
-| **📊 Accounts Personnel** | Create & manage EFT batches | Payment processing, batch creation |
-| **✅ Authorizer** | Approve/reject batches | Quality control, final approval |
-
-### **Core Functionality:**
-- **Payment Processing**: Batch creation with real-time validation
-- **RBM Compliance**: Banking-compliant EFT file generation (TXT/CSV)
-- **Multi-Level Approval**: Complete audit trail for compliance
-- **Master Data Management**: Banks, suppliers, zones, schemes
-- **Real-Time Reporting**: Role-specific dashboards and analytics
-
-### **Technical Specifications:**
-- **Backend**: Django 4.2.27
-- **Frontend**: Bootstrap 5, JavaScript
-- **Database**: SQLite3 (Development)
-- **Authentication**: Django Auth with custom permissions
-- **File Formats**: TXT, CSV, Excel export
-
----
-
-## 📁 **PROJECT STRUCTURE**
-
-```
-CRWB-EFT-System-v1.0/
-├── 📜 launch.bat                 # Main launcher (ONE COMMAND)
-├── 📜 setup.bat                  # Setup only
-├── 📜 start.bat                  # Start server only
-├── 📜 reset.bat                  # Reset everything
-├── 📜 backup.bat                 # Create backups
-├── 📜 restore.bat                # Restore from backup
-├── 📜 update.bat                 # Update packages
-├── 📜 admin.bat                  # Create admin user
-├── 📜 check.bat                  # System diagnostics
-├── 📜 quick_setup.bat           # Fast minimal setup
-├── 📜 runserver.bat             # Just run server
-│
-├── 📄 requirements.txt           # 44+ Python dependencies
-├── 📄 manage.py                  # Django management
-│
-├── 📁 crwb_eft/                 # Project settings
-│   ├── settings.py              # Configuration
-│   ├── urls.py                  # URL routing
-│   └── wsgi.py                  # WSGI configuration
-│
-├── 📁 eft_app/                  # Main application
-│   ├── models.py               # Database models
-│   ├── views.py                # Business logic
-│   ├── forms.py                # Form definitions
-│   ├── admin.py                # Admin interface
-│   ├── fixtures/               # YOUR DATA
-│   │   └── all_data.json      # Complete original system
-│   └── templates/              # HTML templates
-│
-├── 📁 templates/                # Base templates
-├── 📁 static/                  # CSS, JS, images
-└── 📁 media/                   # Uploaded files
-```
-
----
-
-## 🛠️ **DEVELOPER WORKFLOW**
-
-### **For Contributors:**
-```bash
-# 1. Create feature branch
-git checkout -b feature/description
-
-# 2. Test with your changes
-launch.bat
-
-# 3. Export updated data (if changed)
-python manage.py dumpdata --indent 2 > eft_app/fixtures/all_data.json
-
-# 4. Commit and push
-git add .
-git commit -m "Feature: description"
-git push origin feature/description
-```
-
-### **Database Operations:**
-```bash
-# Export current system state
-backup.bat
-
-# Create data migration
-python manage.py makemigrations
-
-# Apply migrations
-python manage.py migrate
-
-# Load specific data
-python manage.py loaddata eft_app/fixtures/specific_data.json
-```
-
----
-
-## 🔍 **TROUBLESHOOTING**
-
-### **Common Issues & Solutions:**
-
-#### **1. Python Not Found:**
+#### **1. "Python not found" Error:**
 ```cmd
-# Check installation
+# Check Python installation
 python --version
-# Should show Python 3.9+
 
 # If not installed:
-# Download from: https://python.org
-# Check "Add Python to PATH" during installation
+# 1. Download from https://python.org
+# 2. During installation, CHECK "Add Python to PATH"
+# 3. Restart Command Prompt and try again
 ```
 
-#### **2. Port 8000 Already in Use:**
+#### **2. "pip install" Fails:**
 ```cmd
-# Method 1: Kill process
+# Try upgrading pip first
+python -m pip install --upgrade pip
+
+# Install Django only
+pip install Django==4.2.27
+
+# Or install from requirements without dependencies
+pip install -r requirements.txt --no-deps
+```
+
+#### **3. Database Errors:**
+```cmd
+# Delete corrupted database
+del db.sqlite3
+
+# Recreate migrations
+python manage.py makemigrations
+python manage.py migrate
+
+# Reload data
+python manage.py loaddata eft_app/fixtures/all_data.json
+```
+
+#### **4. Port 8000 Already in Use:**
+```cmd
+# Find what's using port 8000
 netstat -ano | findstr :8000
+
+# Kill the process (replace PID with actual number)
 taskkill /PID [PID] /F
 
-# Method 2: Use different port
-start.bat 8001
+# Or use different port
+python manage.py runserver 8001
 ```
 
-#### **3. Virtual Environment Issues:**
+#### **5. Virtual Environment Issues:**
 ```cmd
 # Delete and recreate
-reset.bat
+rmdir /s /q venv
+python -m venv venv
+venv\Scripts\activate
+```
+
+---
+
+## 🌐 **ACCESSING THE SYSTEM**
+
+### **After Successful Setup:**
+
+#### **Web Interface:**
+- **Main Application**: http://127.0.0.1:8000
+- **Admin Panel**: http://127.0.0.1:8000/admin
+- **Default Port**: 8000 (change with `runserver 8001`)
+
+#### **Login Credentials:**
+- **Your Original Users**: All 6 users from your system are loaded
+- **Admin Fallback**: admin / admin123 (if data file missing)
+- **Test Users**: Created automatically if no data file
+
+#### **User Roles:**
+1. **👑 System Admin** - Full system access
+2. **📊 Accounts Personnel** - Create/manage batches
+3. **✅ Authorizer** - Approve/reject batches
+
+---
+
+## 🔄 **DEVELOPER WORKFLOW**
+
+### **For Code Contributors:**
+
+```bash
+# 1. Fork repository
+# 2. Clone your fork
+git clone https://github.com/YOUR-USERNAME/CRWB-EFT-System-v1.0.git
+
+# 3. Create feature branch
+git checkout -b feature/new-feature
+
+# 4. Make changes and test
 launch.bat
+
+# 5. Export updated data (if database changed)
+python manage.py dumpdata --indent 2 > eft_app/fixtures/all_data.json
+
+# 6. Commit and push
+git add .
+git commit -m "Add: new feature description"
+git push origin feature/new-feature
+
+# 7. Create Pull Request on GitHub
 ```
 
-#### **4. Database Corruption:**
-```cmd
-# 1. Create backup
-backup.bat
+### **Database Management:**
 
-# 2. Reset database
-reset.bat
+```bash
+# Export current data
+python manage.py dumpdata --indent 2 > backup.json
 
-# 3. Restore from backup
-restore.bat
-```
+# Import data
+python manage.py loaddata backup.json
 
-#### **5. Package Installation Failures:**
-```cmd
-# Try minimal setup
-quick_setup.bat
-```
+# Create migration
+python manage.py makemigrations
 
-### **Diagnostic Tools:**
-```cmd
-# Run system check
-check.bat
+# Apply migration
+python manage.py migrate
 
-# Check Django installation
-python manage.py check
-
-# Verify database
-python manage.py dbshell
+# Reset database (WARNING: deletes all data)
+python manage.py flush
 ```
 
 ---
 
 ## 📊 **SYSTEM REQUIREMENTS**
 
-### **Minimum:**
-- **OS**: Windows 10/11, macOS 10.15+, Ubuntu 18.04+
-- **Python**: 3.9 or higher
-- **RAM**: 4GB minimum
+### **Minimum Requirements:**
+- **Operating System**: Windows 10/11, macOS 10.15+, Ubuntu 18.04+
+- **Python Version**: 3.9 or higher
+- **Memory**: 4GB RAM
 - **Storage**: 500MB free space
-- **Browser**: Chrome 90+, Firefox 88+, Edge 90+
+- **Browser**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 
-### **Recommended:**
-- **OS**: Windows 11, macOS 12+, Ubuntu 20.04+
-- **Python**: 3.11 or higher
-- **RAM**: 8GB or more
+### **Recommended Specifications:**
+- **Operating System**: Windows 11, macOS 12+, Ubuntu 20.04+
+- **Python Version**: 3.11 or higher
+- **Memory**: 8GB RAM or more
 - **Storage**: 1GB free space
-- **Browser**: Latest Chrome/Firefox/Edge
+- **Browser**: Latest version of Chrome/Firefox
+
+### **Network Requirements:**
+- Localhost access (for development)
+- Port 8000 open (or alternative port)
+- No external dependencies required
 
 ---
 
 ## 🔒 **SECURITY FEATURES**
 
-### **Authentication:**
-- Role-based access control (RBAC)
-- Secure password hashing (PBKDF2)
-- Session management with timeout
-- Login attempt limiting
+### **Built-in Security:**
+- ✅ Role-Based Access Control (RBAC)
+- ✅ Password hashing with PBKDF2
+- ✅ CSRF protection on all forms
+- ✅ XSS prevention
+- ✅ SQL injection protection
+- ✅ Session management with timeout
+- ✅ Login attempt limiting
 
 ### **Data Protection:**
-- SQL injection prevention
-- XSS protection
-- CSRF tokens
-- Secure headers
-- Audit logging
+- All passwords encrypted
+- Audit trail for all user actions
+- Data validation at application level
+- Secure file handling
+- Regular backup system
 
-### **Compliance:**
-- Audit trail for all actions
-- User activity logging
-- Data validation at all levels
-- File integrity checks
+### **Compliance Features:**
+- Complete audit logging
+- User activity monitoring
+- Data integrity checks
+- Export validation
+- Bank compliance standards
 
 ---
 
-## 📈 **DEPLOYMENT**
+## 📈 **PERFORMANCE OPTIMIZATION**
 
-### **Development (Default):**
+### **For Better Performance:**
+
+```bash
+# 1. Collect static files
+python manage.py collectstatic
+
+# 2. Use production database (for deployment)
+# Change to PostgreSQL or MySQL in settings.py
+
+# 3. Enable caching
+# Add cache configuration in settings.py
+
+# 4. Optimize database
+python manage.py dbshell
+# Then run: ANALYZE;
+```
+
+### **Monitoring Tools:**
+```bash
+# Check system performance
+check.bat
+
+# View Django debug toolbar (when DEBUG=True)
+# Install: pip install django-debug-toolbar
+
+# Monitor database queries
+python manage.py shell_plus --print-sql
+```
+
+---
+
+## 🚀 **DEPLOYMENT GUIDE**
+
+### **Development Deployment (Default):**
+Already configured for local development. Just run:
 ```cmd
-# Already configured for development
 launch.bat
 ```
 
-### **Production Checklist:**
-1. Set `DEBUG = False` in `crwb_eft/settings.py`
-2. Configure `ALLOWED_HOSTS`
-3. Use PostgreSQL/MySQL instead of SQLite
-4. Set up proper static file serving
-5. Configure HTTPS/SSL
-6. Set up regular backups with `backup.bat`
+### **Production Deployment Steps:**
 
-### **Backup Strategy:**
-```cmd
-# Daily automated backup (add to Task Scheduler)
-backup.bat
+#### **1. Environment Preparation:**
+```bash
+# Clone repository
+git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
+cd CRWB-EFT-System-v1.0
 
-# Weekly full export
-python manage.py dumpdata --indent 2 > weekly_backup_$(date +%Y%m%d).json
+# Create production environment
+python -m venv venv_prod
+source venv_prod/bin/activate  # or venv_prod\Scripts\activate
 ```
 
----
-
-## 📝 **API DOCUMENTATION**
-
-### **Available Endpoints:**
+#### **2. Configuration:**
+Edit `crwb_eft/settings.py`:
+```python
+DEBUG = False
+ALLOWED_HOSTS = ['your-domain.com', 'www.your-domain.com']
+# Change database to PostgreSQL/MySQL
+# Set up email configuration
+# Configure static files for production
 ```
-GET    /api/supplier/{id}/details/    # Supplier information
-GET    /api/scheme/{id}/details/      # Scheme details with cost center
-GET    /api/scheme/{id}/zone/         # Zone information
+
+#### **3. Production Dependencies:**
+```bash
+pip install -r requirements.txt
+pip install gunicorn psycopg2-binary  # For PostgreSQL
 ```
 
-### **Authentication:**
-All API endpoints require session authentication. Use the same login as the web interface.
+#### **4. Database Setup:**
+```bash
+python manage.py migrate
+python manage.py loaddata eft_app/fixtures/all_data.json
+python manage.py collectstatic --noinput
+```
 
-### **Response Format:**
-```json
-{
-    "success": true,
-    "data": {
-        "field": "value"
+#### **5. Start Production Server:**
+```bash
+# Using Gunicorn
+gunicorn crwb_eft.wsgi:application --bind 0.0.0.0:8000
+
+# Using uWSGI
+uwsgi --http :8000 --module crwb_eft.wsgi
+```
+
+#### **6. Web Server Configuration (Nginx):**
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    
+    location /static/ {
+        alias /path/to/CRWB-EFT-System-v1.0/static/;
+    }
+    
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
 }
 ```
 
 ---
 
-## 🔄 **MAINTENANCE SCHEDULE**
+## 🔄 **BACKUP & RECOVERY**
 
-### **Daily:**
-- Run `check.bat` for system health
-- Verify backups with `backup.bat`
-- Check server logs
-
-### **Weekly:**
-- Run `update.bat` for package updates
-- Review audit logs
-- Test backup restoration
-
-### **Monthly:**
-- Security review
-- Performance optimization
-- Database cleanup
-
----
-
-## 🆘 **SUPPORT & HELP**
-
-### **Quick Help:**
-1. **First**: Run `check.bat` for diagnostics
-2. **Second**: Check troubleshooting section above
-3. **Third**: Create issue on GitHub
-
-### **Common Solutions:**
+### **Regular Backups:**
 ```cmd
-# Most issues can be fixed with:
-reset.bat
-launch.bat
+# Manual backup
+backup.bat
+
+# Scheduled backup (Windows Task Scheduler)
+# Create task to run backup.bat daily
+
+# Database export
+python manage.py dumpdata --indent 2 > backup_%date%.json
 ```
 
+### **Restore Procedure:**
+```cmd
+# 1. Stop server
+# 2. Restore from backup
+restore.bat
+
+# Or manually:
+python manage.py loaddata backup_file.json
+
+# 3. Verify data
+python manage.py shell -c "
+from django.contrib.auth.models import User
+print(f'Users restored: {User.objects.count()}')
+"
+```
+
+### **Disaster Recovery:**
+1. **Data Loss**: Use `restore.bat` with latest backup
+2. **System Crash**: Run `reset.bat` then `launch.bat`
+3. **Database Corruption**: Delete `db.sqlite3` and restore from backup
+
+---
+
+## 📞 **SUPPORT & MAINTENANCE**
+
 ### **Getting Help:**
+
+#### **1. Self-Help:**
+```cmd
+# Run diagnostics
+check.bat
+
+# Check server logs
+# Look at terminal output when running launch.bat
+
+# Verify installation
+python manage.py check
+```
+
+#### **2. Common Solutions:**
+- **Can't login**: Use `admin.bat` to create new admin
+- **Server won't start**: Run `reset.bat` then `launch.bat`
+- **Data missing**: Run `restore.bat` with backup file
+- **Slow performance**: See Performance Optimization section
+
+#### **3. Contact Support:**
 - **GitHub Issues**: https://github.com/wonderrful003/CRWB-EFT-System-v1.0/issues
 - **Documentation**: This README file
-- **System Logs**: Check server output in terminal
+- **System Logs**: Check terminal output for errors
+
+### **Regular Maintenance:**
+
+#### **Daily:**
+```cmd
+# Check system health
+check.bat
+
+# Create backup
+backup.bat
+```
+
+#### **Weekly:**
+```cmd
+# Update packages
+update.bat
+
+# Clean up old backups
+# Delete backup files older than 30 days
+```
+
+#### **Monthly:**
+- Review audit logs
+- Check disk space
+- Update security settings
+- Test restore procedure
 
 ---
 
-## 📄 **LICENSE & USAGE**
+## 📄 **LICENSE & COMPLIANCE**
 
-### **Copyright Notice:**
-© 2025 CRWB EFT System. All rights reserved.
-
-### **Usage Rights:**
-- **Internal Use**: Approved for CRWB operations
+### **License Information:**
+- **Software**: Proprietary, all rights reserved
+- **Usage**: Internal CRWB operations only
 - **Modification**: Not permitted without authorization
-- **Distribution**: Restricted to authorized personnel only
-- **Commercial Use**: Requires written agreement
+- **Distribution**: Restricted to authorized personnel
 
 ### **Compliance Requirements:**
-- Maintain audit trails
+- Maintain complete audit trails
 - Regular security assessments
 - Data protection compliance
-- User access logging
+- User access monitoring
+- Backup verification
+
+### **Data Privacy:**
+- All user data encrypted
+- Access logs maintained
+- Export controls in place
+- Regular security updates
 
 ---
 
-## 🙏 **ACKNOWLEDGMENTS**
+## 🎯 **QUICK REFERENCE**
 
-- **Django Framework** and community
-- **Bootstrap Team** for frontend components
-- **Python Community** for excellent tools
-- **RBM Compliance Teams** for banking standards
-- **All Contributors** and testers
-
----
-
-## 📞 **CONTACT INFORMATION**
-
-### **Development Team:**
-- **Repository**: https://github.com/wonderrful003/CRWB-EFT-System-v1.0
-- **Issues**: GitHub Issues tab
-- **Support**: Internal IT department
-
-### **System Information:**
-- **Version**: CRWB EFT System v1.0
-- **Last Updated**: January 2025
-- **Data Version**: Includes complete original system data
-- **Status**: Production Ready
-
----
-
-## 🎉 **READY TO START?**
-
+### **Most Common Commands:**
 ```cmd
-# Three simple commands:
+# First time setup
+launch.bat
+
+# Setup without starting server
+setup.bat
+start.bat
+
+# Troubleshooting
+reset.bat
+check.bat
+
+# Data management
+backup.bat
+restore.bat
+```
+
+### **Access URLs:**
+- **Application**: http://localhost:8000
+- **Admin**: http://localhost:8000/admin
+- **API Docs**: Included in application
+
+### **Default Credentials:**
+- **Admin**: admin / admin123 (if no data file)
+- **Your Users**: All original users loaded from your system
+
+---
+
+## 🎉 **READY TO BEGIN?**
+
+### **Option 1: Automated Setup (Recommended)**
+```cmd
 git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
 cd CRWB-EFT-System-v1.0
 launch.bat
 ```
 
-**Your complete EFT payment system is ready in minutes, with all your original data preserved!**
+### **Option 2: Manual Setup**
+Follow the **Manual Setup** section above for step-by-step instructions.
+
+### **Option 3: Quick Test**
+```cmd
+git clone https://github.com/wonderrful003/CRWB-EFT-System-v1.0.git
+cd CRWB-EFT-System-v1.0
+quick_setup.bat
+```
+
+**Your complete EFT payment system with all your original data will be ready in minutes!**
+
+---
+
+**System Version**: v1.0  
+**Last Updated**: January 2025  
+**GitHub**: https://github.com/wonderrful003/CRWB-EFT-System-v1.0  
+**Support**: Check troubleshooting section or create GitHub issue
